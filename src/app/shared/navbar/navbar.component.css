@@ -1,0 +1,16 @@
+.brand-size {
+  font-size: 1.8rem;
+}
+
+img {
+  display: flex;
+  margin: auto;
+  max-width: 85%;
+  min-width: 75%;
+}
+
+a {
+  text-decoration: none;
+  cursor: pointer;
+}
+
