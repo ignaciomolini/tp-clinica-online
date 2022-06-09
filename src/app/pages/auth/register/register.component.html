@@ -1,1 +1,64 @@
-<p>register works!</p>
+<div class="container">
+  <div class="card" [ngClass]="{ 'mar-top': formElegido != '' }">
+    <div class="card-header">
+      <h1 class="text-center p-3 text-white">Registro {{ formElegido }}</h1>
+      <div
+        class="backIcon"
+        *ngIf="formElegido != ''"
+        (click)="formElegido = ''"
+      >
+        <img
+          src="https://img.icons8.com/officel/2x/back.png"
+          width="35px"
+          alt="backIcon"
+        />
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="p-5" [hidden]="captcha">
+        <re-captcha
+          (resolved)="resolved($event)"
+          siteKey="6LfHYFogAAAAAN6CWgM1hNJSobApSiUArflGzVhl"
+        ></re-captcha>
+      </div>
+      <div [hidden]="!captcha">
+        <div *ngIf="formElegido == ''" class="botones">
+          <button
+            class="btn btn-success btn-lg text-center me-4"
+            (click)="formElegido = 'paciente'"
+          >
+            <img
+              class="icono"
+              src="https://cdn.icon-icons.com/icons2/979/PNG/256/Patient_Male_icon-icons.com_75053.png"
+              alt="paciente"
+              width="120px"
+            />
+          </button>
+          <button
+            class="btn btn-info btn-lg text-center ms-4"
+            (click)="formElegido = 'especialista'"
+          >
+            <img
+              class="icono"
+              src="https://cdn.icon-icons.com/icons2/979/PNG/128/Doctor_Male_icon-icons.com_75051.png"
+              alt="especialista"
+              width="120px"
+            />
+          </button>
+        </div>
+        <div *ngIf="formElegido == 'paciente'">
+          <app-form-paciente
+            [mostrarLoading]="mostrarLoading"
+            (paciente)="registrarUsuario($event)"
+          ></app-form-paciente>
+        </div>
+        <div *ngIf="formElegido == 'especialista'">
+          <app-form-especialista
+            [mostrarLoading]="mostrarLoading"
+            (especialista)="registrarUsuario($event)"
+          ></app-form-especialista>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

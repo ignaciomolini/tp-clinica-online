@@ -1,0 +1,52 @@
+.fondo {
+  height: 85vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.contenedor {
+  background-position: center;
+  background-size: cover;
+  background-image: url(http://hivaidsclinic.doctor/wp-content/uploads/2019/05/090716_stjoes.jpg);
+  width: 60rem;
+  border: 1px solid rgb(71, 103, 147);
+  box-shadow: 7px 7px 20px rgb(39, 74, 120);
+  padding: 3rem 0px 3rem;
+}
+
+.bg-color{
+  background: linear-gradient(
+    to bottom,
+    rgba(54, 93, 144, 0.9),
+    rgba(121, 139, 171, 0.6)
+  );
+}
+
+.botones {
+  display: flex;
+  justify-content: space-evenly;
+  padding: 3rem;
+}
+
+.btn{
+  padding: 1.5rem;
+}
+
+.titulo {
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+}
+
+.badge {
+  box-shadow: 7px 7px 20px rgb(39, 74, 120);
+}
+
+@media (max-width: 420px) {
+  .titulo{
+    font-size: 30px;
+  }
+  .btn{
+    padding: 0.5rem;
+  }
+}

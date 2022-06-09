@@ -1,27 +1,21 @@
-# TpClinicaOnline
+# Clinica Online
+La clínica OnLine, especialista en salud, cuenta actualmente con consultorios (6 en la actualidad), dos laboratorios (físicos en la clínica), y una sala de espera general. Está abierta al público de lunes a viernes en el horario de 8:00 a 19:00, y los sábados en el horario de 8:00 a 14:00. Trabajan en ella profesionales de diversas especialidades, que ocupan los consultorios acorde a su disponibilidad, y reciben en ellos pacientes con turno para consulta o tratamiento. Dichos turnos son pedidos por la web seleccionando el profesional o la especialidad. La duración mínima de un turno es 30 minutos, pero los profesionales pueden cambiar la duración según su especialidad. Estos profesionales pueden tener más de una especialidad. También contamos con un sector dentro de la clínica que se encarga de la organización y administración de la misma.
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 13.3.2.
+## Pagina de inicio
+Al ingresar a la pagina debe elegir si registrarse, en caso de no tener una cuenta, o iniciar sesion.
 
-## Development server
+![](https://firebasestorage.googleapis.com/v0/b/tp-clinica-online-f6745.appspot.com/o/readme%2Fpagina-principal.PNG?alt=media&token=5504ea3d-5306-4788-bc8f-8faaeec90fb8)
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+## Registro
+Para registrase debe pasar el captcha y elegir segun corresponda paciente o especialista.
 
-## Code scaffolding
+![](https://firebasestorage.googleapis.com/v0/b/tp-clinica-online-f6745.appspot.com/o/readme%2Fregistro.PNG?alt=media&token=6fad2835-9436-429f-ba1d-d54539066dbb)
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+Luego debera completar todos los datos que se le piden.
 
-## Build
+![](https://firebasestorage.googleapis.com/v0/b/tp-clinica-online-f6745.appspot.com/o/readme%2Fregistro-paciente.PNG?alt=media&token=67f0ff4d-940f-4ffe-badb-c23c801f96ec)
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+## Inicio de sesion
+Para iniciar sesion puede hacerlo con su cuenta personal, una vez que la verifico, o usar uno de los usuarios de testing.
 
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+![](https://firebasestorage.googleapis.com/v0/b/tp-clinica-online-f6745.appspot.com/o/readme%2Flogin.PNG?alt=media&token=9143966c-bd76-4f32-95e1-a7a7c269cf0c)

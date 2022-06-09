@@ -1,0 +1,61 @@
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 90vw;
+  height: 85vh;
+}
+
+.backIcon{
+  position: absolute;
+  left: 1rem;
+  top: 2.2rem;
+  cursor: pointer;
+}
+
+.card {
+  background-color: rgba(240, 248, 255, 0);
+  box-shadow: 7px 7px 20px rgb(39, 74, 120);
+}
+
+.card-body {
+  background: linear-gradient(
+    to top,
+    rgba(74, 116, 170, 0.8),
+    rgba(121, 139, 171, 0.4)
+  );
+}
+
+.card-header {
+  background: linear-gradient(
+    to top,
+    rgba(74, 116, 170, 0.8),
+    rgba(121, 139, 171, 0.4)
+  );
+}
+
+.btn {
+  border-radius: 20%;
+  padding: 2rem;
+}
+
+.botones {
+  display: flex;
+  justify-content: space-around;
+  padding: 2rem;
+}
+
+@media (max-width: 420px) {
+  .icono {
+    width: 50px;
+  }
+  .btn {
+    padding: 1rem;
+  }
+  .mar-top {
+    margin-top: 15rem;
+  }
+  .backIcon{
+    top: 1.6rem;
+  }
+}

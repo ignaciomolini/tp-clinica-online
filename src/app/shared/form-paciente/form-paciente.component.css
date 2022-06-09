@@ -1,0 +1,18 @@
+.reset {
+  all: revert;
+}
+
+.bg {
+  background: linear-gradient(to bottom, rgba(74, 116, 170, 0.6), rgba(121, 139, 171, 0.4));
+  border: 1px solid rgb(55, 73, 99);
+  box-shadow: 7px 7px 20px rgb(39, 74, 120);
+}
+
+input[type=file]{
+    display: none;
+}
+
+
+
+
+

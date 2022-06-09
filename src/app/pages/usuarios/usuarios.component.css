@@ -1,0 +1,25 @@
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 90vw;
+  height: 85vh;
+}
+
+.card {
+  width: 50rem;
+  background-color: rgba(240, 248, 255, 0);
+  box-shadow: 7px 7px 20px rgb(39, 74, 120);
+}
+
+.card-body, .card-header, .badge {
+  background: linear-gradient(
+    to top,
+    rgba(74, 116, 170, 0.8),
+    rgba(121, 139, 171, 0.4)
+  );
+}
+
+a{
+    cursor: pointer;
+}

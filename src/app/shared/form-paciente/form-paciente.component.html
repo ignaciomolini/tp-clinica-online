@@ -1,0 +1,140 @@
+<form [formGroup]="formRegister" (ngSubmit)="enviarPaciente()">
+  <div class="container text-white">
+    <fieldset class="reset bg rounded p-4">
+      <legend class="reset">Informacion personal</legend>
+      <div class="row">
+        <div class="col form-group mb-2">
+          <input
+            type="text"
+            placeholder="Nombre"
+            class="form-control text-dark"
+            [ngClass]="{'border border-2 border-danger': (this.formRegister.controls['nombre'].errors?.['required'] && this.formRegister.controls['nombre'].touched) || (this.formRegister.controls['nombre'].errors?.['pattern'] || this.formRegister.controls['nombre'].errors?.['minlength'])}"
+            formControlName="nombre"
+          />
+        </div>
+        <div class="col form-group mb-2">
+          <input
+            type="text"
+            placeholder="Apellido"
+            class="form-control text-dark"
+            [ngClass]="{'border border-2 border-danger': (this.formRegister.controls['apellido'].errors?.['required'] && this.formRegister.controls['apellido'].touched) || (this.formRegister.controls['apellido'].errors?.['pattern'] || this.formRegister.controls['apellido'].errors?.['minlength'])}"
+            formControlName="apellido"
+          />
+        </div>
+      </div>
+      <div class="row mt-2">
+        <div class="col form-group mb-2">
+          <input
+            type="text"
+            placeholder="Edad"
+            class="form-control text-dark"
+            [ngClass]="{'border border-2 border-danger': (this.formRegister.controls['edad'].errors?.['required'] && this.formRegister.controls['edad'].touched) || (this.formRegister.controls['edad'].errors?.['pattern'] || this.formRegister.controls['edad'].errors?.['min'] || this.formRegister.controls['edad'].errors?.['max'])}"
+            formControlName="edad"
+          />
+        </div>
+        <div class="col form-group mb-2">
+          <input
+            type="text"
+            placeholder="DNI"
+            class="form-control text-dark"
+            [ngClass]="{'border border-2 border-danger': (this.formRegister.controls['dni'].errors?.['required'] && this.formRegister.controls['dni'].touched) || (this.formRegister.controls['dni'].errors?.['pattern'])}"
+            formControlName="dni"
+          />
+        </div>
+      </div>
+      <div class="row mt-2">
+        <div class="col form-group">
+          <input
+            type="text"
+            placeholder="Obra social"
+            class="form-control text-dark"
+            [ngClass]="{'border border-2 border-danger': (this.formRegister.controls['obraSocial'].errors?.['required'] && this.formRegister.controls['obraSocial'].touched)}"
+            formControlName="obraSocial"
+          />
+        </div>
+      </div>
+    </fieldset>
+
+    <div class="row">
+      <div class="col-md-7">
+        <fieldset class="reset bg rounded mt-3 p-4">
+          <legend class="reset">Informacion cuenta</legend>
+          <div class="row mb-3">
+            <div class="col form-group">
+              <input
+                type="email"
+                placeholder="Email"
+                class="form-control text-dark"
+                [ngClass]="{'border border-2 border-danger': (this.formRegister.controls['email'].errors?.['required'] && this.formRegister.controls['email'].touched) || (this.formRegister.controls['email'].errors?.['email'])}"
+                formControlName="email"
+              />
+            </div>
+          </div>
+          <div class="row">
+            <div class="col form-group">
+              <input
+                type="password"
+                placeholder="Contraseña"
+                class="form-control text-dark"
+                [ngClass]="{'border border-2 border-danger': (this.formRegister.controls['password'].errors?.['required'] && this.formRegister.controls['password'].touched) || (this.formRegister.controls['password'].errors?.['minlength'])}"
+                formControlName="password"
+              />
+            </div>
+          </div>
+        </fieldset>
+      </div>
+      <div class="col-md-5">
+        <fieldset class="reset bg rounded mt-3 p-4">
+          <legend class="reset">Fotos de perfil</legend>
+          <div class="row mb-3 align-items-center">
+            <div class="col form-group">
+              <label for="foto1" class="btn btn-primary w-100"
+                >Foto perfil 1</label
+              >
+              <input
+                type="file"
+                accept=".png, .jpg, ,jpeg"
+                id="foto1"
+                multiple
+                class="form-control"
+                formControlName="foto1"
+                (change)="cargarImagen($event, 1)"
+              />
+            </div>
+            <div class="col-3 ps-0">
+              <img class="rounded-circle" src="{{ mostrarImagenUno }}" alt="foto1" width="38px" height="38px"/>
+            </div>
+          </div>
+          <div class="row align-items-center">
+            <div class="col form-group">
+              <label for="foto2" class="btn btn-primary w-100"
+                >Foto perfil 2</label
+              >
+              <input
+                type="file"
+                accept=".png, .jpg, ,jpeg"
+                multiple
+                id="foto2"
+                class="form-control"
+                formControlName="foto2"
+                (change)="cargarImagen($event, 2)"
+              />
+            </div>
+            <div class="col-3 ps-0">
+              <img class="rounded-circle" src="{{ mostrarImagenDos }}" alt="foto2"  width="38px" height="38px"/>
+            </div>
+          </div>
+        </fieldset>
+      </div>
+    </div>
+
+    <button
+      type="submit"
+      class="btn btn-success btn-lg w-100 mt-4 mb-2"
+      [disabled]="formRegister.invalid"
+    >
+      <span *ngIf="mostrarLoading; else msj"><app-loading></app-loading></span>
+      <ng-template #msj> Registrarse </ng-template>
+    </button>
+  </div>
+</form>

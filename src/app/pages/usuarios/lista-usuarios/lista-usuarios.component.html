@@ -1,0 +1,75 @@
+<div class="row">
+  <div class="col">
+    <div class="input-group mb-3">
+      <div class="col">
+        <span class="input-group-text">Filtrar por rol:</span>
+      </div>
+      <div class="col">
+        <select class="form-select" [(ngModel)]="rolSeleccionado">
+          <option selected>Todos</option>
+          <option value="paciente">Paciente</option>
+          <option value="especialista">Especialista</option>
+          <option value="administrador">Administrador</option>
+        </select>
+      </div>
+    </div>
+  </div>
+  <div class="col">
+    <div class="input-group mb-3">
+      <div class="col">
+        <span class="input-group-text">Filtrar por estado:</span>
+      </div>
+      <div class="col">
+        <select class="form-select" [(ngModel)]="estadoSeleccionado">
+          <option selected>Todos</option>
+          <option value="true">Activo</option>
+          <option value="false">No activo</option>
+        </select>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-2 text-end">
+    <button class="btn btn-info" (click)="filtrarLista()">Filtrar</button>
+  </div>
+</div>
+
+<div class="table-responsive">
+  <table class="table align-middle table-hover table-light text-center">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Email</th>
+        <th scope="col">Rol</th>
+        <th scope="col">Detalle</th>
+        <th scope="col">Activo</th>
+      </tr>
+    </thead>
+    <tbody *ngIf="listaFiltrada.length > 0">
+      <tr *ngFor="let usuario of listaFiltrada; let i = index">
+        <th scope="row">{{ i + 1 }}</th>
+        <td>{{ usuario.email }}</td>
+        <td>{{ usuario.rol }}</td>
+        <td><button class="btn">Ver detalle</button></td>
+        <td (click)="cambiarEstado(usuario)">
+          <button class="btn" *ngIf="usuario.activo">
+            <img
+              src="https://cdn-icons-png.flaticon.com/128/889/889754.png"
+              alt="switch"
+              width="35px"
+            />
+          </button>
+          <button class="btn" *ngIf="!usuario.activo">
+            <img
+              src="https://cdn-icons-png.flaticon.com/128/889/889758.png"
+              alt="switch"
+              width="35px"
+            />
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<div *ngIf="listaUsuarios.length == 0" class="text-center">
+  <app-loading></app-loading>
+</div>

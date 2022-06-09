@@ -1,1 +1,100 @@
-<p>login works!</p>
+<div class="container">
+  <div class="card rounded">
+    <div class="card-header">
+      <h1 class="text-center p-3 text-white">Login</h1>
+    </div>
+    <div class="card-body p-4">
+      <form [formGroup]="formLogin" (ngSubmit)="ingresar()">
+        <div class="row">
+          <div class="col form-group">
+            <input
+              type="email"
+              class="form-control text-dark"
+              placeholder="Email"
+              [ngClass]="{'border border-2 border-danger': (this.formLogin.controls['email'].errors?.['required'] && this.formLogin.controls['email'].touched) || (this.formLogin.controls['email'].errors?.['email'])}"
+              formControlName="email"
+            />
+          </div>
+        </div>
+        <div class="row mt-3">
+          <div class="col form-group">
+            <input
+              type="password"
+              class="form-control text-dark"
+              placeholder="Contraseña"
+              [ngClass]="{'border border-2 border-danger': (this.formLogin.controls['password'].errors?.['required'] && this.formLogin.controls['password'].touched) || (this.formLogin.controls['password'].errors?.['minlength'])}"
+              formControlName="password"
+            />
+          </div>
+        </div>
+        <div class="d-grid mt-4">
+          <button type="submit" class="btn btn-success btn-lg">Ingresar</button>
+        </div>
+      </form>
+    </div>
+    <div class="card-footer px-4 py-3">
+      <div class="btn-toolbar d-flex justify-content-between">
+        <div class="btn-group">
+          <button type="button" class="btn btn-primary" (click)="asignarUsuario(1)">
+            <img
+              class="rounded-circle"
+              src="https://firebasestorage.googleapis.com/v0/b/tp-clinica-online-f6745.appspot.com/o/fotos-perfil%2Fpacientes%2F1-34596431-1654639108049?alt=media&token=0167a190-4244-4e04-9dfa-c6b8a7a21c7f"
+              width="40px"
+              height="40px"
+              alt="perfil-paciente-1"
+            />
+          </button>
+          <button type="button" class="btn btn-primary" (click)="asignarUsuario(2)">
+            <img
+              class="rounded-circle"
+              src="https://firebasestorage.googleapis.com/v0/b/tp-clinica-online-f6745.appspot.com/o/fotos-perfil%2Fpacientes%2F1-40583724-1654639322087?alt=media&token=650e48c6-347c-4624-ab47-1cceb715cb09"
+              width="40px"
+              height="40px"
+              alt="perfil-paciente-2"
+            />
+          </button>
+          <button type="button" class="btn btn-primary" (click)="asignarUsuario(3)">
+            <img
+              class="rounded-circle"
+              src="https://firebasestorage.googleapis.com/v0/b/tp-clinica-online-f6745.appspot.com/o/fotos-perfil%2Fpacientes%2F1-29384129-1654639583704?alt=media&token=f7fd6288-7b8f-40e1-9f37-9946c9097c3a"
+              width="40px"
+              height="40px"
+              alt="perfil-paciente-3"
+            />
+          </button>
+        </div>
+        <div class="btn-group">
+          <button type="button" class="btn btn-primary" (click)="asignarUsuario(4)">
+            <img
+              class="rounded-circle"
+              src="https://firebasestorage.googleapis.com/v0/b/tp-clinica-online-f6745.appspot.com/o/fotos-perfil%2Fespecialistas%2F18405434-1654701007299?alt=media&token=e8226a46-6a5c-47f6-b78d-bd7714cf1c55"
+              width="40px"
+              height="40px"
+              alt="perfil-epecialista-1"
+            />
+          </button>
+          <button type="button" class="btn btn-primary" (click)="asignarUsuario(5)">
+            <img
+              class="rounded-circle"
+              src="https://firebasestorage.googleapis.com/v0/b/tp-clinica-online-f6745.appspot.com/o/fotos-perfil%2Fespecialistas%2F27560823-1654701094117?alt=media&token=b2c164b0-8b79-4c49-a278-dec0826bad19"
+              width="40px"
+              height="40px"
+              alt="perfil-especialista-2"
+            />
+          </button>
+        </div>
+        <div class="btn-group">
+          <button type="button" class="btn btn-primary" (click)="asignarUsuario(6)">
+            <img
+              class="rounded-circle"
+              src="https://firebasestorage.googleapis.com/v0/b/tp-clinica-online-f6745.appspot.com/o/fotos-perfil%2Fadministradores%2F34028156-1654726122841?alt=media&token=1c512123-aa33-4145-a36f-2a49ef8f5c8e"
+              width="40px"
+              height="40px"
+              alt="perfil-admin"
+            />
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
