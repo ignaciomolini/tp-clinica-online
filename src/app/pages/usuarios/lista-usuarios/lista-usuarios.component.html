@@ -50,15 +50,15 @@
         <td>{{ usuario.email }}</td>
         <td>{{ usuario.rol }}</td>
         <td><button class="btn">Ver detalle</button></td>
-        <td (click)="cambiarEstado(usuario)">
-          <button class="btn" *ngIf="usuario.activo">
+        <td>
+          <button *ngIf="usuario.rol != 'administrador' && usuario.activo" class="btn" (click)="cambiarEstado(usuario)">
             <img
               src="https://cdn-icons-png.flaticon.com/128/889/889754.png"
               alt="switch"
               width="35px"
             />
           </button>
-          <button class="btn" *ngIf="!usuario.activo">
+          <button *ngIf="usuario.rol != 'administrador' && !usuario.activo" class="btn" (click)="cambiarEstado(usuario)"> 
             <img
               src="https://cdn-icons-png.flaticon.com/128/889/889758.png"
               alt="switch"
