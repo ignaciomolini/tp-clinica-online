@@ -39,6 +39,4 @@ export class UsuarioService {
     const resp = await uploadBytes(imgRef, imagen)
     return getDownloadURL(resp.ref);
   }
-
-  
 }

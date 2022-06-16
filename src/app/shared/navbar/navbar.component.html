@@ -39,9 +39,36 @@
         >
           <a class="nav-link" [routerLink]="['usuarios']">Usuarios</a>
         </li>
+        <li
+          *ngIf="
+            usuarioDB &&
+            (usuarioDB.rol == 'administrador' ||
+              usuarioDB.rol == 'paciente')
+          "
+          class="nav-item"
+        >
+          <a class="nav-link" [routerLink]="['solicitar-turno']"
+            >Solicitar turno</a
+          >
+        </li>
+        <li
+          *ngIf="
+            usuarioDB &&
+            (usuarioDB.rol == 'especialista' ||
+              usuarioDB.rol == 'paciente')
+          "
+          class="nav-item"
+        >
+          <a class="nav-link" [routerLink]="['mis-turnos']"
+            >Mis turnos</a
+          >
+        </li>
       </ul>
 
-      <div *ngIf="usuarioAuth && usuarioDB; else log" class="navbar-nav ml-auto btn-group">
+      <div
+        *ngIf="usuarioAuth && usuarioDB; else log"
+        class="navbar-nav ml-auto btn-group"
+      >
         <a
           type="button"
           class="nav-link dropdown-toggle"
@@ -55,13 +82,15 @@
         </a>
         <ul class="dropdown-menu dropdown-menu-end p-0 text-center">
           <li class="nav-item">
-            <a class="nav-link hover text-dark">Perfil</a>
+            <a class="nav-link hover text-dark" [routerLink]="['perfil']">Perfil</a>
           </li>
           <li>
             <div class="dropdown-divider m-0"></div>
           </li>
           <li class="nav-item">
-            <a class="nav-link hover text-dark" (click)="cerrarSesion()">Cerrar sesion</a>
+            <a class="nav-link hover text-dark" (click)="cerrarSesion()"
+              >Cerrar sesion</a
+            >
           </li>
         </ul>
       </div>

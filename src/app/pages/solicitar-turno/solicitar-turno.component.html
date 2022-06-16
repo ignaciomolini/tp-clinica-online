@@ -1,0 +1,168 @@
+<div class="container">
+  <div class="card rounded" @entrada>
+    <div class="card-header">
+      <h1 class="text-center p-3 text-white">Solicitar turno</h1>
+    </div>
+    <div class="card-body p-4">
+      <div [ngSwitch]="estado">
+        <div *ngSwitchCase="'pacientes'">
+          <h2 class="text-center mb-4">
+            <span class="badge">Elija un paciente</span>
+          </h2>
+          <div *ngIf="especialidades.length; else loading">
+            <div class="row scroll">
+              <div
+                class="col p-1 mb-3 text-center"
+                *ngFor="let paciente of pacientes"
+              >
+                <button
+                  type="button"
+                  class="btn btn-primary"
+                  (click)="elegirPaciente(paciente)"
+                >
+                  <p class="mb-1">
+                    {{ paciente.nombre }} {{ paciente.apellido }}
+                  </p>
+                  <img
+                    class="mb-2 rounded-circle"
+                    src="{{ paciente.foto1 }}"
+                    width="50px"
+                    height="50px"
+                  />
+                </button>
+              </div>
+            </div>
+          </div>
+          <ng-template #loading>
+            <app-loading class="text-center"></app-loading>
+          </ng-template>
+        </div>
+        <div *ngSwitchCase="'especialidades'">
+          <h2 class="text-center mb-4">
+            <img
+              *ngIf="usuarioActual.rol == 'administrador'"
+              class="back"
+              src="https://img.icons8.com/officel/2x/back.png"
+              width="25px"
+              (click)="estado = 'pacientes'"
+            />
+            <span class="badge">Elija una especialidad</span>
+          </h2>
+          <div *ngIf="especialidades.length; else loading">
+            <div class="row scroll">
+              <div
+                class="col p-1 mb-3 text-center"
+                *ngFor="let especialidad of especialidades"
+              >
+                <button
+                  type="button"
+                  class="btn btn-primary"
+                  (click)="elegirEspecialidad(especialidad)"
+                >
+                  <p class="mb-1">{{ especialidad.nombre }}</p>
+                  <img
+                    class="img-fluid mb-2"
+                    src="{{ especialidad.imagen }}"
+                    width="50px"
+                  />
+                </button>
+              </div>
+            </div>
+          </div>
+          <ng-template #loading>
+            <app-loading class="text-center"></app-loading>
+          </ng-template>
+        </div>
+        <div *ngSwitchCase="'especialistas'">
+          <h2 class="text-center mb-4">
+            <img
+              class="back"
+              src="https://img.icons8.com/officel/2x/back.png"
+              width="25px"
+              (click)="estado = 'especialidades'"
+            />
+            <span class="badge">Elija un especialista</span>
+          </h2>
+          <div class="row scroll">
+            <div
+              class="col p-1 mb-3 text-center"
+              *ngFor="let especialista of especialistasPorEspecialidad"
+            >
+              <button
+                type="button"
+                class="btn btn-primary"
+                (click)="elegirEspecialista(especialista)"
+              >
+                <p class="mb-1">
+                  {{ especialista.nombre }} {{ especialista.apellido }}
+                </p>
+                <img
+                  class="mb-2 rounded-circle"
+                  src="{{ especialista.foto }}"
+                  width="50px"
+                  height="50px"
+                />
+              </button>
+            </div>
+          </div>
+        </div>
+        <div *ngSwitchCase="'dias'">
+          <h2 class="text-center mb-4">
+            <img
+              class="back"
+              src="https://img.icons8.com/officel/2x/back.png"
+              width="25px"
+              (click)="estado = 'especialistas'"
+            />
+            <span class="badge">Elija un dia</span>
+          </h2>
+          <div class="row scroll">
+            <div class="col p-1 mb-3 text-center" *ngFor="let dia of dias">
+              <button
+                type="button"
+                class="btn btn-primary"
+                (click)="elegirDia(dia)"
+              >
+                <p class="mb-1">
+                  {{
+                    dia.toLocaleDateString("es", {
+                      weekday: "long",
+                      month: "short",
+                      day: "numeric"
+                    })
+                  }}
+                </p>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div *ngSwitchCase="'horas'">
+          <h2 class="text-center mb-4">
+            <img
+              class="back"
+              src="https://img.icons8.com/officel/2x/back.png"
+              width="25px"
+              (click)="estado = 'dias'"
+            />
+            <span class="badge">Elija una hora</span>
+          </h2>
+          <div class="row scroll">
+            <div class="col p-1 mb-3 text-center" *ngFor="let hora of horas">
+              <button
+                type="button"
+                class="btn btn-primary"
+                (click)="elegirHora(hora)"
+              >
+                <p class="mb-1">
+                  {{ hora }}
+                </p>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+

@@ -1,0 +1,110 @@
+<div class="container">
+  <div class="card" @entrada>
+    <div class="card-header">
+      <button class="btn pdf" (click)="crearPdf()">
+        <img src="https://cdn-icons-png.flaticon.com/128/337/337946.png" width="35px">
+      </button>
+      <h1 class="text-white p-2 text-center">Perfil</h1>
+    </div>
+    <div class="card-body">
+      <div class="row gutters-sm">
+        <div class="col-md-4 mb-3">
+          <div class="d-flex flex-column align-items-center text-center">
+            <img
+              src="{{ usuario.foto || usuario.foto1 }}"
+              class="foto-perfil1 rounded-circle mx-5 mb-4"
+            />
+            <img
+              *ngIf="usuario.rol == 'paciente'"
+              src="{{ usuario.foto2 }}"
+              class="foto-perfil2 rounded-circle mx-5"
+            />
+          
+          </div>
+        </div>
+
+      
+        <div class="col-md-8 text-white">
+          <div class="card mb-3">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-sm-4">
+                  <h6 class="mb-0">Nombre completo:</h6>
+                </div>
+                <div class="col-sm-8">
+                  {{ usuario.nombre }} {{ usuario.apellido }}
+                </div>
+              </div>
+              <hr />
+              <div class="row">
+                <div class="col-sm-4">
+                  <h6 class="mb-0">Email:</h6>
+                </div>
+                <div class="col-sm-8">{{ usuario.email }}</div>
+              </div>
+              <hr />
+              <div class="row">
+                <div class="col-sm-4">
+                  <h6 class="mb-0">DNI:</h6>
+                </div>
+                <div class="col-sm-8">{{ usuario.dni }}</div>
+              </div>
+              <hr />
+              <div class="row">
+                <div class="col-sm-4">
+                  <h6 class="mb-0">Edad:</h6>
+                </div>
+                <div class="col-sm-8">{{ usuario.edad }}</div>
+              </div>
+              <span *ngIf="usuario.rol == 'paciente'">
+                <hr />
+                <div class="row">
+                  <div class="col-sm-4">
+                    <h6 class="mb-0">Obra social:</h6>
+                  </div>
+                  <div class="col-sm-8">
+                    {{ usuario.obraSocial }}
+                  </div>
+                </div>
+              </span>
+              <span *ngIf="usuario.rol == 'especialista'">
+                <hr />
+                <div
+                  class="accordion accordion-flush"
+                  id="accordionFlushExample"
+                >
+                  <div class="accordion-item">
+                    <h2 class="accordion-header" id="flush-headingOne">
+                      <button
+                        class="accordion-button collapsed text-white"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#flush-collapseOne"
+                        aria-expanded="false"
+                        aria-controls="flush-collapseOne"
+                      >
+                        Especialidades
+                      </button>
+                    </h2>
+                    <div
+                      id="flush-collapseOne"
+                      class="accordion-collapse collapse"
+                      aria-labelledby="flush-headingOne"
+                      data-bs-parent="#accordionFlushExample"
+                    >
+                      <div class="accordion-body p-2">
+                        <ul class="m-0" *ngFor="let especialidad of usuario.especialidad">
+                            <li class="text-dark">{{especialidad.nombre}}</li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,20 +1,44 @@
-<div *ngIf="cargar && !usuarioAuth" class="fondo">
+<div *ngIf="cargar && !usuarioAuth" class="fondo" @entrada>
   <div class="contenedor rounded">
-    <h1 class="titulo text-white text-center display-4">
-      <span class="badge bg-color p-4">Bienvenido a la Clinica Online!</span>
-    </h1>
-    <div class="botones">
-      <button class="btn btn-success btn-lg" [routerLink]="['auth/login']">
-        Iniciar Sesion
-      </button>
-      <button class="btn btn-info btn-lg" [routerLink]="['auth/register']">
-        Registrarse
-      </button>
+    <div>
+      <h1 class="titulo text-white text-center display-4">
+        <span class="badge bg-color p-4">Bienvenido a la Clinica Online!</span>
+      </h1>
+      <div class="botones">
+        <button class="btn btn-success btn-lg" [routerLink]="['auth/login']">
+          Iniciar Sesion
+        </button>
+        <button class="btn btn-info btn-lg" [routerLink]="['auth/register']">
+          Registrarse
+        </button>
+      </div>
     </div>
   </div>
 </div>
-<div *ngIf="usuarioDB" class="fondo">
-  <div class="card p-4 bg-color text-white">
-    <h1>Bienvenido/a {{usuarioDB.nombre}}!</h1>
+<div *ngIf="usuarioDB" class="fondo" @entrada>
+  <div class="container">
+    <div class="p-3 mb-4 bg-light">
+      <div class="container-fluid py-5">
+        <h1 class="display-5 fw-bold">Bienvenido/a {{ usuarioDB.nombre }}!</h1>
+      </div>
+    </div>
+    <div class="row align-items-md-stretch">
+      <div class="col-md-6">
+        <div class="h-100 p-5 bg-light">
+          <h2>Turnos</h2>
+          <p>
+            Mire sus turnos o solicite nuevos
+          </p>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="h-100 p-5 bg-light border">
+          <h2>Perfil</h2>
+          <p>
+            Revise su perfil
+          </p>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

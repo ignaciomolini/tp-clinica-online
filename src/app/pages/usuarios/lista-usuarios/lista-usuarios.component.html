@@ -1,46 +1,46 @@
 <div class="row">
-  <div class="col">
+  <div class="col-sm-4">
     <div class="input-group mb-3">
-      <div class="col">
-        <span class="input-group-text">Filtrar por rol:</span>
-      </div>
-      <div class="col">
-        <select class="form-select" [(ngModel)]="rolSeleccionado">
-          <option selected>Todos</option>
-          <option value="paciente">Paciente</option>
-          <option value="especialista">Especialista</option>
-          <option value="administrador">Administrador</option>
-        </select>
-      </div>
+      <span class="input-group-text">Rol:</span>
+      <select class="form-select" [(ngModel)]="rolSeleccionado">
+        <option selected>Todos</option>
+        <option value="paciente">Paciente</option>
+        <option value="especialista">Especialista</option>
+        <option value="administrador">Administrador</option>
+      </select>
     </div>
   </div>
-  <div class="col">
+  <div class="col-sm-4">
     <div class="input-group mb-3">
-      <div class="col">
-        <span class="input-group-text">Filtrar por estado:</span>
-      </div>
-      <div class="col">
-        <select class="form-select" [(ngModel)]="estadoSeleccionado">
-          <option selected>Todos</option>
-          <option value="true">Activo</option>
-          <option value="false">No activo</option>
-        </select>
-      </div>
+      <span class="input-group-text">Estado:</span>
+      <select class="form-select" [(ngModel)]="estadoSeleccionado">
+        <option selected>Todos</option>
+        <option value="true">Activo</option>
+        <option value="false">No activo</option>
+      </select>
     </div>
   </div>
-  <div class="col-sm-2 text-end">
+  <div class="col-1 mb-2">
     <button class="btn btn-info" (click)="filtrarLista()">Filtrar</button>
+  </div>
+  <div class="col text-end mb-2">
+    <button class="btn btn-excel p-0" (click)="exportarAExcel()">
+      <img src="https://img.icons8.com/color/344/ms-excel.png" width="40px" />
+    </button>
   </div>
 </div>
 
 <div class="table-responsive">
-  <table class="table align-middle table-hover table-light text-center">
+  <table
+    id="tabla"
+    class="table align-middle table-hover table-light text-center"
+  >
     <thead>
       <tr>
         <th scope="col">#</th>
         <th scope="col">Email</th>
         <th scope="col">Rol</th>
-        <th scope="col">Detalle</th>
+        <th *ngIf="!excel" scope="col">Detalle</th>
         <th scope="col">Activo</th>
       </tr>
     </thead>
@@ -49,16 +49,25 @@
         <th scope="row">{{ i + 1 }}</th>
         <td>{{ usuario.email }}</td>
         <td>{{ usuario.rol }}</td>
-        <td><button class="btn">Ver detalle</button></td>
+        <td *ngIf="!excel"><button class="btn">Ver detalle</button></td>
         <td>
-          <button *ngIf="usuario.rol != 'administrador' && usuario.activo" class="btn" (click)="cambiarEstado(usuario)">
+          <span hidden>{{ usuario.activo | bool }}</span>
+          <button
+            *ngIf="usuario.rol != 'administrador' && usuario.activo"
+            class="btn"
+            (click)="cambiarEstado(usuario)"
+          >
             <img
               src="https://cdn-icons-png.flaticon.com/128/889/889754.png"
               alt="switch"
               width="35px"
             />
           </button>
-          <button *ngIf="usuario.rol != 'administrador' && !usuario.activo" class="btn" (click)="cambiarEstado(usuario)"> 
+          <button
+            *ngIf="usuario.rol != 'administrador' && !usuario.activo"
+            class="btn"
+            (click)="cambiarEstado(usuario)"
+          >
             <img
               src="https://cdn-icons-png.flaticon.com/128/889/889758.png"
               alt="switch"

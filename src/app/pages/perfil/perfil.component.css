@@ -1,0 +1,70 @@
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  height: 85vh;
+}
+
+.card {
+  max-width: 60rem;
+  background-color: rgba(240, 248, 255, 0);
+  box-shadow: 7px 7px 20px rgb(39, 74, 120);
+}
+
+.card-body,
+.card-header,
+.badge {
+  background: linear-gradient(
+    to top,
+    rgba(74, 116, 170, 0.8),
+    rgba(121, 139, 171, 0.4)
+  );
+}
+
+.accordion-button,
+.accordion-header {
+  background-color: rgba(99, 137, 187, 0.8);
+  box-shadow: 1px 1px 5px rgb(39, 74, 120);
+}
+
+.foto-perfil1 {
+  width: 10rem;
+  height: 10rem;
+  box-shadow: 7px 7px 20px rgb(39, 74, 120);
+}
+
+.foto-perfil2 {
+  width: 7rem;
+  height: 7rem;
+  box-shadow: 7px 7px 20px rgb(39, 74, 120);
+}
+
+.pdf {
+  padding: 0;
+  position: absolute;
+  right: 1rem;
+  top: 1.5rem;
+}
+
+.pdf:focus {
+  outline: none !important;
+  outline-width: 0 !important;
+  box-shadow: none;
+  -moz-box-shadow: none;
+  -webkit-box-shadow: none;
+}
+
+.pdf:active {
+  transform: scale(0.85);
+}
+
+@media (max-width: 420px) {
+  .container {
+    margin-top: 2rem;
+  }
+  .pdf {
+    right: 0.5rem;
+    top: 1rem;
+  }
+}

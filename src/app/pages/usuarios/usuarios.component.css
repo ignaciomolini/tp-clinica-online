@@ -23,3 +23,9 @@
 a{
     cursor: pointer;
 }
+
+@media (max-width: 420px) {
+  .container{
+    margin-top: 10rem;
+  }
+}

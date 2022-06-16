@@ -1,6 +1,6 @@
 export interface Paciente {
     idDb?: string;
-    uid?: string;
+    uid: string;
     nombre: string;
     apellido: string;
     edad: number;

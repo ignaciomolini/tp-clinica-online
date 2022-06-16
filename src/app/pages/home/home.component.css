@@ -8,11 +8,19 @@
 .contenedor {
   background-position: center;
   background-size: cover;
-  background-image: url(http://hivaidsclinic.doctor/wp-content/uploads/2019/05/090716_stjoes.jpg);
-  width: 60rem;
+  background-image: url(../../../assets/images/home.jpg);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 65rem;
+  height: 30rem;
   border: 1px solid rgb(71, 103, 147);
   box-shadow: 7px 7px 20px rgb(39, 74, 120);
   padding: 3rem 0px 3rem;
+}
+
+.container{
+  height: 50vh;
 }
 
 .bg-color{

@@ -17,7 +17,6 @@ export class RolGuard implements CanActivate {
   
   verificarRol(route: ActivatedRouteSnapshot){
     let usuario = JSON.parse(localStorage.getItem('usuario') || '{}');
-    console.log(usuario)
     if(usuario.rol == route.data['rol']){
       return true;
     }

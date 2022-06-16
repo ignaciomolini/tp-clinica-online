@@ -1,8 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Observable, Subject, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { Especialista } from 'src/app/models/especialista';
 import { Paciente } from 'src/app/models/paciente';
 import { UsuarioService } from 'src/app/services/usuario.service';
+import * as XLSX from 'xlsx';
 
 @Component({
   selector: 'app-lista-usuarios',
@@ -14,7 +15,8 @@ export class ListaUsuariosComponent implements OnInit {
   subs: Subscription;
   listaFiltrada: any[] = [];
   rolSeleccionado: string = 'Todos';
-  estadoSeleccionado: any = 'Todos';
+  estadoSeleccionado: string = 'Todos';
+  excel: boolean = false;
 
   constructor(private usuariosService: UsuarioService) {
     this.subs = this.usuariosService.traerTodosLosUsuarios().subscribe(usuarios => {
@@ -44,7 +46,7 @@ export class ListaUsuariosComponent implements OnInit {
 
     } else if (this.rolSeleccionado == 'Todos' && this.estadoSeleccionado != 'Todos') {
       this.listaFiltrada = this.listaUsuarios.filter(usuario => usuario.activo == estado);
-      
+
     } else {
       this.listaFiltrada = this.listaUsuarios.filter(usuario => (usuario.activo == estado) &&
         (usuario.rol == this.rolSeleccionado));
@@ -52,4 +54,17 @@ export class ListaUsuariosComponent implements OnInit {
     this.subs.unsubscribe();
   }
 
+  exportarAExcel() {
+    this.excel = true;
+    setTimeout(() => {
+      let element = document.getElementById('tabla');
+      const worksheet: XLSX.WorkSheet = XLSX.utils.table_to_sheet(element);
+      const book: XLSX.WorkBook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(book, worksheet, 'tabla');
+      XLSX.writeFile(book, 'tabla-usuarios.xlsx');
+    })
+    setTimeout(() => {
+      this.excel = false;
+    })
+  }
 }

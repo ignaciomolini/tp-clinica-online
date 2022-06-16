@@ -17,10 +17,25 @@ const routes: Routes = [
   {
     path: 'usuarios',
     loadChildren: () => import('./pages/usuarios/usuarios.module').then(m => m.UsuariosModule),
-    data:{
+    data: {
       rol: 'administrador'
     },
     canActivate: [AuthGuard, RolGuard]
+  },
+  {
+    path: 'solicitar-turno',
+    loadChildren: () => import('./pages/solicitar-turno/solicitar-turno.module').then(m => m.SolicitarTurnoModule),
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'mis-turnos',
+    loadChildren: () => import('./pages/mis-turnos/mis-turnos.module').then(m => m.MisTurnosModule),
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'perfil',
+    loadChildren: () => import('./pages/perfil/perfil.module').then(m => m.PerfilModule),
+    canActivate: [AuthGuard]
   }
 ];
 

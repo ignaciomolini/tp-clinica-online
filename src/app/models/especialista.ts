@@ -1,6 +1,8 @@
+import { Especialidad } from "./especialidad";
+
 export interface Especialista {
     idDb?: string;
-    uid?: string;
+    uid: string;
     nombre: string;
     apellido: string;
     edad: number;
@@ -9,6 +11,6 @@ export interface Especialista {
     password: string;
     foto: string;
     activo: boolean;
-    especialidad: string;
+    especialidad: Especialidad[];
     rol: string;
 }

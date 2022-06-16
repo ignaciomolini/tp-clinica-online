@@ -6,6 +6,7 @@ import { UsuariosComponent } from './usuarios.component';
 import { ListaUsuariosComponent } from './lista-usuarios/lista-usuarios.component';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { FormsModule } from '@angular/forms';
+import { PipesModule } from 'src/app/pipes/pipes.module';
 
 
 @NgModule({
@@ -17,7 +18,8 @@ import { FormsModule } from '@angular/forms';
     CommonModule,
     FormsModule,
     UsuariosRoutingModule,
-    SharedModule
+    SharedModule,
+    PipesModule
   ]
 })
 export class UsuariosModule { }

@@ -1,0 +1,19 @@
+<div class="container">
+  <div class="card" @entrada>
+    <div class="card-header">
+      <h1 class="fw-bold text-white text-center p-3">Mis turnos</h1>
+    </div>
+    <div class="card-body">
+      <app-listado-turnos-paciente
+        *ngIf="usuario.rol == 'paciente'"
+        [paciente]="usuario"
+        [turnosPaciente]="enviarPacientes$()"
+      ></app-listado-turnos-paciente>
+      <app-listado-turnos-especialista
+        *ngIf="usuario.rol == 'especialista'"
+        [especialista]="usuario"
+        [turnosEspecialista]="enviarEspecialistas$()"
+      ></app-listado-turnos-especialista>
+    </div>
+  </div>
+</div>

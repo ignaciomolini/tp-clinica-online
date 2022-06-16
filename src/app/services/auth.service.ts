@@ -36,7 +36,10 @@ export class AuthService {
 
   async register(email: string, password: string) {
     try{
-      return await this.auth.createUserWithEmailAndPassword(email, password);  
+      const reg = await this.auth.createUserWithEmailAndPassword(email, password); 
+      // await this.sendVerificationEmail();
+      await this.logout();
+      return reg;
     } catch (error: any) {
       let mensaje;
       switch (error.code) {
@@ -66,6 +69,10 @@ export class AuthService {
 
   logout() {
     return this.auth.signOut()
+  }
+
+  getCurrentUserPromise() {
+    return this.auth.currentUser;
   }
 
   getCurrentUser() {

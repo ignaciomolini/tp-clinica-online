@@ -44,24 +44,42 @@
       </div>
       <div class="row mt-2">
         <div class="col form-group">
-          <div class="input-group">
-            <input
-              type="text"
-              placeholder="Especialidad"
-              class="form-control text-dark"
-              [ngClass]="{'border border-2 border-danger': (this.formRegister.controls['especialidad'].errors?.['required'] && this.formRegister.controls['especialidad'].touched)}"
-              formControlName="especialidad"
-            />
-            <div class="btn-group">
-                <button type="button" class="btn bg-btn dropdown-toggle text-white" data-bs-toggle="dropdown">
-                  Elegir una
-                </button>
-                <ul class="dropdown-menu dropdown-menu-end">
-                  <li><a class="dropdown-item" (click)="asignarEspecialidad('Traumatologia')">Traumatologia</a></li>
-                  <li><a class="dropdown-item" (click)="asignarEspecialidad('Odontologia')">Odontologia</a></li>
-                </ul>
+          <div class="dropdown d-grid gap-2">
+            <button
+              class="btn btn-primary dropdown-toggle"
+              type="button"
+              data-bs-toggle="dropdown"
+            >
+              Elegir especialidades
+            </button>
+            <div class="dropdown-menu">
+              <div
+                class="dropdown-item"
+                *ngFor="let esp of especialidades; let i = index"
+              >
+                <input
+                  class="form-check-input me-2"
+                  type="checkbox"
+                  id="{{ i }}"
+                  formArrayName="especialidades"
+                  [value]="esp.id"
+                  (change)="onCheckboxChange($event)"
+                />
+                <label class="form-check-label" for="{{ i }}">
+                  {{ esp.nombre }}
+                </label>
               </div>
+            </div>
           </div>
+        </div>
+        <div class="col form-group d-grid gap-2">
+          <button
+            type="button"
+            class="btn btn-primary"
+            (click)="agregarNuevaEspecialidad()"
+          >
+            Agregar nueva especialidad
+          </button>
         </div>
       </div>
     </fieldset>
