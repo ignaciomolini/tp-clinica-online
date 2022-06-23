@@ -17,10 +17,10 @@ export class RolGuard implements CanActivate {
   
   verificarRol(route: ActivatedRouteSnapshot){
     let usuario = JSON.parse(localStorage.getItem('usuario') || '{}');
-    if(usuario.rol == route.data['rol']){
+    if(route.data['rol'].includes(usuario.rol)){
       return true;
     }
-    this.toastr.error('Para ingresar aqui debe ser admin', 'Error', {
+    this.toastr.error('No tiene los permisos para ingresar aqui', 'Error', {
       timeOut: 3000
     });
     this.router.navigate(['']);

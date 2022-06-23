@@ -1,84 +1,143 @@
-<div class="row">
-  <div class="col-sm-4">
-    <div class="input-group mb-3">
-      <span class="input-group-text">Rol:</span>
-      <select class="form-select" [(ngModel)]="rolSeleccionado">
-        <option selected>Todos</option>
-        <option value="paciente">Paciente</option>
-        <option value="especialista">Especialista</option>
-        <option value="administrador">Administrador</option>
-      </select>
+<div *ngIf="estado == 'tabla'">
+  <div class="row">
+    <div class="col-sm-4">
+      <div class="input-group mb-3">
+        <span class="input-group-text">Rol:</span>
+        <select class="form-select" [(ngModel)]="rolSeleccionado">
+          <option selected>Todos</option>
+          <option value="paciente">Paciente</option>
+          <option value="especialista">Especialista</option>
+          <option value="administrador">Administrador</option>
+        </select>
+      </div>
+    </div>
+    <div class="col-sm-4">
+      <div class="input-group mb-3">
+        <span class="input-group-text">Estado:</span>
+        <select class="form-select" [(ngModel)]="estadoSeleccionado">
+          <option selected>Todos</option>
+          <option value="true">Activo</option>
+          <option value="false">No activo</option>
+        </select>
+      </div>
+    </div>
+    <div class="col-1 mb-2">
+      <button class="btn btn-info" (click)="filtrarLista()">Filtrar</button>
+    </div>
+    <div class="col text-end mb-2">
+      <button class="btn btn-excel p-0" (click)="exportarAExcel()">
+        <img src="https://img.icons8.com/color/344/ms-excel.png" width="40px" />
+      </button>
     </div>
   </div>
-  <div class="col-sm-4">
-    <div class="input-group mb-3">
-      <span class="input-group-text">Estado:</span>
-      <select class="form-select" [(ngModel)]="estadoSeleccionado">
-        <option selected>Todos</option>
-        <option value="true">Activo</option>
-        <option value="false">No activo</option>
-      </select>
-    </div>
+
+  <div class="table-responsive">
+    <table
+      id="tabla"
+      class="table table-bordered align-middle text-center text-white"
+    >
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Nombre</th>
+          <th>Edad</th>
+          <th>DNI</th>
+          <th>Email</th>
+          <th>Rol</th>
+          <th *ngIf="!excel">Historia clinica</th>
+          <th *ngIf="!excel">Detalle</th>
+          <th>Activo</th>
+        </tr>
+      </thead>
+      <tbody *ngIf="listaFiltrada.length > 0">
+        <tr *ngFor="let usuario of listaFiltrada; let i = index" appLupa>
+          <th>{{ i + 1 }}</th>
+          <td>{{ usuario.nombre }} {{ usuario.apellido }}</td>
+          <td>{{ usuario.edad }}</td>
+          <td>{{ usuario.dni }}</td>
+          <td>{{ usuario.email }}</td>
+          <td>{{ usuario.rol }}</td>
+          <td *ngIf="!excel">
+            <button
+              class="btn text-white"
+              *ngIf="usuario.rol == 'paciente'"
+              (click)="mostrarHistoriaClinica(usuario)"
+            >
+              Ver
+            </button>
+          </td>
+          <td *ngIf="!excel">
+            <button
+              class="btn text-white"
+              (click)="mostrarDetalle(usuario)"
+            >
+              Ver
+            </button>
+          </td>
+          <td>
+            <span hidden>{{ usuario.activo | bool }}</span>
+            <button
+              *ngIf="usuario.rol != 'administrador' && usuario.activo"
+              class="btn"
+              (click)="cambiarEstado(usuario)"
+            >
+              <img
+                src="https://cdn-icons-png.flaticon.com/128/889/889754.png"
+                alt="switch"
+                width="35px"
+              />
+            </button>
+            <button
+              *ngIf="usuario.rol != 'administrador' && !usuario.activo"
+              class="btn"
+              (click)="cambiarEstado(usuario)"
+            >
+              <img
+                src="https://cdn-icons-png.flaticon.com/128/889/889758.png"
+                alt="switch"
+                width="35px"
+              />
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
-  <div class="col-1 mb-2">
-    <button class="btn btn-info" (click)="filtrarLista()">Filtrar</button>
-  </div>
-  <div class="col text-end mb-2">
-    <button class="btn btn-excel p-0" (click)="exportarAExcel()">
-      <img src="https://img.icons8.com/color/344/ms-excel.png" width="40px" />
-    </button>
+  <div *ngIf="listaUsuarios.length == 0" class="text-center">
+    <app-loading></app-loading>
   </div>
 </div>
 
-<div class="table-responsive">
-  <table
-    id="tabla"
-    class="table align-middle table-hover table-light text-center"
-  >
-    <thead>
-      <tr>
-        <th scope="col">#</th>
-        <th scope="col">Email</th>
-        <th scope="col">Rol</th>
-        <th *ngIf="!excel" scope="col">Detalle</th>
-        <th scope="col">Activo</th>
-      </tr>
-    </thead>
-    <tbody *ngIf="listaFiltrada.length > 0">
-      <tr *ngFor="let usuario of listaFiltrada; let i = index">
-        <th scope="row">{{ i + 1 }}</th>
-        <td>{{ usuario.email }}</td>
-        <td>{{ usuario.rol }}</td>
-        <td *ngIf="!excel"><button class="btn">Ver detalle</button></td>
-        <td>
-          <span hidden>{{ usuario.activo | bool }}</span>
-          <button
-            *ngIf="usuario.rol != 'administrador' && usuario.activo"
-            class="btn"
-            (click)="cambiarEstado(usuario)"
-          >
-            <img
-              src="https://cdn-icons-png.flaticon.com/128/889/889754.png"
-              alt="switch"
-              width="35px"
-            />
-          </button>
-          <button
-            *ngIf="usuario.rol != 'administrador' && !usuario.activo"
-            class="btn"
-            (click)="cambiarEstado(usuario)"
-          >
-            <img
-              src="https://cdn-icons-png.flaticon.com/128/889/889758.png"
-              alt="switch"
-              width="35px"
-            />
-          </button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+<div *ngIf="estado == 'historia clinica'">
+  <h2 class="text-white text-center mb-3">
+    <img
+      class="back"
+      src="https://img.icons8.com/officel/2x/back.png"
+      width="25px"
+      (click)="estado = 'tabla'"
+    />
+    <span class="badge bg-uno text-wrap"
+      >Historia clinica de {{ usuarioSeleccionado.nombre }}
+      {{ usuarioSeleccionado.apellido }}</span
+    >
+  </h2>
+  <app-historia-clinica
+    [paciente]="usuarioSeleccionado"
+  ></app-historia-clinica>
 </div>
-<div *ngIf="listaUsuarios.length == 0" class="text-center">
-  <app-loading></app-loading>
+
+<div *ngIf="estado == 'detalle'">
+  <h2 class="text-white text-center mb-3">
+    <img
+      class="back"
+      src="https://img.icons8.com/officel/2x/back.png"
+      width="25px"
+      (click)="estado = 'tabla'"
+    />
+    <span class="badge bg-uno text-wrap"
+      >Detalle de {{ usuarioSeleccionado.nombre }}
+      {{ usuarioSeleccionado.apellido }}</span
+    >
+  </h2>
+  <app-detalle-usuarios [usuario]="usuarioSeleccionado"></app-detalle-usuarios>
 </div>

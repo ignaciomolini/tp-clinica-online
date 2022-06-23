@@ -1,0 +1,152 @@
+<div class="card">
+  <div class="card-header">
+    <h2 class="p-1 text-center m-0">Mis horarios</h2>
+    <div
+      class="backIcon me-2"
+      *ngIf="agregarHorario"
+      (click)="agregarHorario = false"
+    >
+      <img src="https://img.icons8.com/officel/2x/back.png" width="25px" />
+    </div>
+  </div>
+  <div class="card-body">
+    <div *ngIf="agregarHorario">
+      <div [ngSwitch]="estado">
+        <div *ngSwitchCase="'especialidades'">
+          <a
+            type="button"
+            class="btn btn-outline-secondary nav-link dropdown-toggle text-dark"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            Selecciona una especialidad
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end p-0 text-center">
+            <div
+              *ngFor="
+                let especialidad of especialista.especialidad;
+                let i = index
+              "
+            >
+              <li *ngIf="i != 0">
+                <div class="dropdown-divider m-0"></div>
+              </li>
+              <li class="nav-item">
+                <a
+                  class="nav-link text-dark"
+                  (click)="setearEspecialidad(especialidad.nombre)"
+                  >{{ especialidad.nombre }}</a
+                >
+              </li>
+            </div>
+          </ul>
+        </div>
+        <div *ngSwitchCase="'dias'">
+          <a
+            type="button"
+            class="btn btn-outline-secondary nav-link dropdown-toggle text-dark"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            Seleccionar un dia
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end p-0 text-center">
+            <div *ngFor="let dia of dias; let i = index">
+              <li *ngIf="i != 0">
+                <div class="dropdown-divider m-0"></div>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link text-dark" (click)="setearDia(i + 1)">{{
+                  dia
+                }}</a>
+              </li>
+            </div>
+          </ul>
+        </div>
+        <div *ngSwitchCase="'desde'">
+          <a
+            type="button"
+            class="btn btn-outline-secondary nav-link dropdown-toggle"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            Seleccionar un horario de entrada
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end p-0 text-center">
+            <div *ngFor="let hora of horas; let i = index">
+              <li *ngIf="i != 0">
+                <div class="dropdown-divider m-0"></div>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link text-dark" (click)="setearHoraDesde(hora)">{{
+                  hora
+                }}</a>
+              </li>
+            </div>
+          </ul>
+        </div>
+        <div *ngSwitchCase="'hasta'">
+          <a
+            type="button"
+            class="btn btn-outline-secondary nav-link dropdown-toggle"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            Seleccionar un horario de salida
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end p-0 text-center">
+            <div *ngFor="let hora of horas; let i = index">
+              <li *ngIf="i != 0">
+                <div class="dropdown-divider m-0"></div>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link text-dark" (click)="setearHoraHasta(hora)">{{
+                  hora
+                }}</a>
+              </li>
+            </div>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="!agregarHorario">
+      <div class="d-grid gap-2 mb-2">
+        <button
+          class="btn btn-outline-primary"
+          (click)="(agregarHorario = true) && (estado = 'especialidades')"
+        >
+          Agregar horario
+        </button>
+      </div>
+      <div *ngFor="let especialidad of especialista.especialidad">
+        <div
+          *ngIf="
+            especialidad.horarios && especialidad.horarios.length > 0;
+            else sinHorarios
+          "
+        >
+          <span>{{ especialidad.nombre }}</span>
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Dia</th>
+                <th>Desde</th>
+                <th>Hasta</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let horario of especialidad.horarios">
+                <td>{{ horario.dia | fecha: "dia" }}</td>
+                <td>{{ horario.desde | fecha: "hora" }}</td>
+                <td>{{ horario.hasta | fecha: "hora" }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <ng-template #sinHorarios>
+          <span>{{ especialidad.nombre }} no tiene horarios asignados</span>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+</div>

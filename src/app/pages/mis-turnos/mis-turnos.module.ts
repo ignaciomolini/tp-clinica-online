@@ -7,7 +7,8 @@ import { ListadoTurnosPacienteComponent } from './listado-turnos-paciente/listad
 import { ListadoTurnosEspecialistaComponent } from './listado-turnos-especialista/listado-turnos-especialista.component';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { PipesModule } from 'src/app/pipes/pipes.module';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { DirectivesModule } from 'src/app/directives/directives.module';
 
 
 @NgModule({
@@ -21,7 +22,9 @@ import { FormsModule } from '@angular/forms';
     MisTurnosRoutingModule,
     SharedModule,
     PipesModule,
-    FormsModule
+    FormsModule,
+    ReactiveFormsModule,
+    DirectivesModule
   ]
 })
 export class MisTurnosModule { }

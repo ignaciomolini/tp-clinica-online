@@ -1,0 +1,81 @@
+<div class="table-responsive">
+  <table 
+    class="table table-bordered align-middle text-center text-white"
+    *ngFor="let element of listaHistoriaClinica; let i = index"
+    id="tabla{{i}}"
+  >
+    <thead class="align-middle">
+      <tr>
+        <th>Fecha</th>
+        <th>Especialidad</th>
+        <th>Especialista</th>
+        <th>Altura</th>
+        <th>Peso</th>
+        <th>Temperatura</th>
+        <th>Presion</th>
+        <th
+          *ngIf="
+            element.historiaClinica.datosDinamicos &&
+            element.historiaClinica.datosDinamicos[0]
+          "
+        >
+          {{ element.historiaClinica.datosDinamicos[0].clave1 }}
+        </th>
+        <th
+          *ngIf="
+            element.historiaClinica.datosDinamicos &&
+            element.historiaClinica.datosDinamicos[1]
+          "
+        >
+          {{ element.historiaClinica.datosDinamicos[1].clave2 }}
+        </th>
+        <th
+          *ngIf="
+            element.historiaClinica.datosDinamicos &&
+            element.historiaClinica.datosDinamicos[2]
+          "
+        >
+          {{ element.historiaClinica.datosDinamicos[2].clave3 }}
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>{{ element.fecha | fecha }}</td>
+        <td>{{ element.especialidad.nombre }}</td>
+        <td>{{ element.especialista }}</td>
+        <td>{{ element.historiaClinica.altura | historiaClinica: 'altura' }}</td>
+        <td>{{ element.historiaClinica.peso | historiaClinica: 'peso' }}</td>
+        <td>{{ element.historiaClinica.temperatura | historiaClinica: 'temperatura' }}</td>
+        <td>{{ element.historiaClinica.presion | historiaClinica: 'presion' }}</td>
+        <td
+          *ngIf="
+            element.historiaClinica.datosDinamicos &&
+            element.historiaClinica.datosDinamicos[0]
+          "
+        >
+          {{ element.historiaClinica.datosDinamicos[0].valor1 }}
+        </td>
+        <td
+          *ngIf="
+            element.historiaClinica.datosDinamicos &&
+            element.historiaClinica.datosDinamicos[1]
+          "
+        >
+          {{ element.historiaClinica.datosDinamicos[1].valor2 }}
+        </td>
+        <td
+          *ngIf="
+            element.historiaClinica.datosDinamicos &&
+            element.historiaClinica.datosDinamicos[2]
+          "
+        >
+          {{ element.historiaClinica.datosDinamicos[2].valor3 }}
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<div *ngIf="listaHistoriaClinica.length == 0">
+  <p class="text-white text-center fs-4">No posee</p>
+</div>

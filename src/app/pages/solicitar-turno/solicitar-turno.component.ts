@@ -6,10 +6,11 @@ import { Administrador } from 'src/app/models/administrador';
 import { Especialidad } from 'src/app/models/especialidad';
 import { Especialista } from 'src/app/models/especialista';
 import { Paciente } from 'src/app/models/paciente';
-import { Turno } from 'src/app/models/turno';
+import { estadoTurno, Turno } from 'src/app/models/turno';
 import { EspecialidadService } from 'src/app/services/especialidad.service';
 import { TurnoService } from 'src/app/services/turno.service';
 import { UsuarioService } from 'src/app/services/usuario.service';
+import { Horario } from 'src/app/models/horario';
 
 @Component({
   selector: 'app-solicitar-turno',
@@ -139,7 +140,7 @@ export class SolicitarTurnoComponent implements OnInit {
       if (result.isConfirmed) {
         const turno: Turno = {
           especialista: this.especialistaElegido || {} as Especialista, paciente: this.pacienteElegido
-          || {} as Paciente, especialidad: this.especialidadElegida, estado: 'pendiente', fecha: new Date(`${this.diaElegido?.toDateString()}, ${hora}`).getTime()
+            || {} as Paciente, especialidad: this.especialidadElegida, estado: estadoTurno.pendiente, fecha: new Date(`${this.diaElegido?.toDateString()}, ${hora}`).getTime()
         }
         this.turnoService.agregarTurno(turno).then(() => Swal.fire('Su turno ha sido guardado', '', 'success'))
           .catch((error: any) => {
@@ -154,69 +155,110 @@ export class SolicitarTurnoComponent implements OnInit {
         timeOut: 3000
       });
     })
-
   }
 
   setearDiasDisponibles(uidEspecialista: string) {
     const turnosEspecialista = this.turnos.filter(t => t.especialista?.uid == uidEspecialista);
     const dias = this.traerDiasMenosDomingo(new Date(), new Date().setDate(new Date().getDate() + 15));
-    let horasSemana = this.intervaloHora('8:00', '19:00');
-    let horasSabado = this.intervaloHora('8:00', '14:00');
 
     const diasDisponibles = dias.filter(dia => {
+      let disponible = false;
+      let horasAtencion: string[] = [];
       let horasOcupadas: string[] = [];
-      if (dia.getDay() != 6) {
-        turnosEspecialista.forEach((turno: Turno) => {
-          let fecha = new Date(turno.fecha);
-          let minutos = (fecha.getMinutes() == 0) ? '00' : '30';
-          if (fecha.toDateString() == dia.toDateString()
-            && horasSemana.includes(`${fecha.getHours()}:${minutos}`)) {
-            horasOcupadas.push(`${fecha.getHours()}:${minutos}`);
-          }
-        })
-        return horasSemana.filter(e => !horasOcupadas.includes(e)).length > 0;
-      } else {
-        this.setearHorasDisponibles(uidEspecialista, dia)
-        turnosEspecialista.forEach((turno: Turno) => {
-          let fecha = new Date(turno.fecha);
-          let minutos = (fecha.getMinutes() == 0) ? '00' : '30';
-          if (fecha.toDateString() == dia.toDateString()
-            && horasSabado.includes(`${fecha.getHours()}:${minutos}`)) {
-            horasOcupadas.push(`${fecha.getHours()}:${minutos}`);
-          }
-        })
-        return horasSabado.filter(e => !horasOcupadas.includes(e)).length > 0;
-      }
+      this.especialistaElegido?.especialidad.forEach(e => {
+        if (e.nombre == this.especialidadElegida.nombre) {
+          e.horarios?.forEach((horario: Horario) => {
+            if (horario.dia == dia.getDay()) {
+              horasAtencion = this.intervaloHora(`${horario.desde}:00`, `${horario.hasta}:00`);
+              turnosEspecialista.forEach((turno: Turno) => {
+                let fecha = new Date(turno.fecha);
+                let minutos = (fecha.getMinutes() == 0) ? '00' : '30';
+                if (fecha.toDateString() == dia.toDateString()
+                  && horasAtencion.includes(`${fecha.getHours()}:${minutos}`)) {
+                  horasOcupadas.push(`${fecha.getHours()}:${minutos}`);
+                }
+              })
+              disponible =  horasAtencion.filter(e => !horasOcupadas.includes(e)).length > 0;
+            }
+          })
+        }
+      })
+      return disponible;
     });
     return diasDisponibles;
+
+    // const diasDisponibles = dias.filter(dia => {
+    //   let horasOcupadas: string[] = [];
+    //   if (dia.getDay() != 6) {
+    //     turnosEspecialista.forEach((turno: Turno) => {
+    //       let fecha = new Date(turno.fecha);
+    //       let minutos = (fecha.getMinutes() == 0) ? '00' : '30';
+    //       if (fecha.toDateString() == dia.toDateString()
+    //         && horasSemana.includes(`${fecha.getHours()}:${minutos}`)) {
+    //         horasOcupadas.push(`${fecha.getHours()}:${minutos}`);
+    //       }
+    //     })
+    //     return horasSemana.filter(e => !horasOcupadas.includes(e)).length > 0;
+    //   } else {
+    //     this.setearHorasDisponibles(uidEspecialista, dia)
+    //     turnosEspecialista.forEach((turno: Turno) => {
+    //       let fecha = new Date(turno.fecha);
+    //       let minutos = (fecha.getMinutes() == 0) ? '00' : '30';
+    //       if (fecha.toDateString() == dia.toDateString()
+    //         && horasSabado.includes(`${fecha.getHours()}:${minutos}`)) {
+    //         horasOcupadas.push(`${fecha.getHours()}:${minutos}`);
+    //       }
+    //     })
+    //     return horasSabado.filter(e => !horasOcupadas.includes(e)).length > 0;
+    //   }
+    // });
+    // return diasDisponibles;
   }
 
   setearHorasDisponibles(uidEspecialista: string, dia: Date) {
     const turnosEspecialista = this.turnos.filter(t => t.especialista?.uid == uidEspecialista);
-    const horasSemana = this.intervaloHora('8:00', '18:00');
-    const horasSabado = this.intervaloHora('8:00', '14:00');
     const horasOcupadas: string[] = [];
     let horasDisponibles: string[] = [];
+    let horasAtencion: string[] = [];
 
-    if (dia.getDay() != 6) {
-      turnosEspecialista.forEach((turno: Turno) => {
-        let fecha = new Date(turno.fecha);
-        let minutos = (fecha.getMinutes() == 0) ? '00' : '30';
-        if (fecha.toDateString() == dia.toDateString() && horasSemana.includes(`${fecha.getHours()}:${minutos}`)) {
-          horasOcupadas.push(`${fecha.getHours()}:${minutos}`);
-        }
-      })
-      horasDisponibles = horasSemana.filter(e => !horasOcupadas.includes(e));
-    } else {
-      turnosEspecialista.forEach((turno: Turno) => {
-        let fecha = new Date(turno.fecha);
-        let minutos = (fecha.getMinutes() == 0) ? '00' : '30';
-        if (fecha.toDateString() == dia.toDateString() && horasSabado.includes(`${fecha.getHours()}:${minutos}`)) {
-          horasOcupadas.push(`${fecha.getHours()}:${minutos}`);
-        }
-      })
-      horasDisponibles = horasSabado.filter(e => !horasOcupadas.includes(e));
-    }
+    this.especialistaElegido?.especialidad.forEach(e => {
+      if (e.nombre == this.especialidadElegida.nombre) {
+        e.horarios?.forEach((horario: Horario) => {
+          if (horario.dia == dia.getDay()) {
+            horasAtencion = this.intervaloHora(`${horario.desde}:00`, `${horario.hasta}:00`);
+            turnosEspecialista.forEach((turno: Turno) => {
+              let fecha = new Date(turno.fecha);
+              let minutos = (fecha.getMinutes() == 0) ? '00' : '30';
+              if (fecha.toDateString() == dia.toDateString()
+                && horasAtencion.includes(`${fecha.getHours()}:${minutos}`)) {
+                horasOcupadas.push(`${fecha.getHours()}:${minutos}`);
+              }
+            })
+            horasDisponibles =  horasAtencion.filter(e => !horasOcupadas.includes(e));
+          }
+        })
+      }
+    })
+
+    // if (dia.getDay() != 6) {
+    //   turnosEspecialista.forEach((turno: Turno) => {
+    //     let fecha = new Date(turno.fecha);
+    //     let minutos = (fecha.getMinutes() == 0) ? '00' : '30';
+    //     if (fecha.toDateString() == dia.toDateString() && horasSemana.includes(`${fecha.getHours()}:${minutos}`)) {
+    //       horasOcupadas.push(`${fecha.getHours()}:${minutos}`);
+    //     }
+    //   })
+    //   horasDisponibles = horasSemana.filter(e => !horasOcupadas.includes(e));
+    // } else {
+    //   turnosEspecialista.forEach((turno: Turno) => {
+    //     let fecha = new Date(turno.fecha);
+    //     let minutos = (fecha.getMinutes() == 0) ? '00' : '30';
+    //     if (fecha.toDateString() == dia.toDateString() && horasSabado.includes(`${fecha.getHours()}:${minutos}`)) {
+    //       horasOcupadas.push(`${fecha.getHours()}:${minutos}`);
+    //     }
+    //   })
+    //   horasDisponibles = horasSabado.filter(e => !horasOcupadas.includes(e));
+    // }
     return horasDisponibles;
   }
 

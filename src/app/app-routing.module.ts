@@ -18,7 +18,15 @@ const routes: Routes = [
     path: 'usuarios',
     loadChildren: () => import('./pages/usuarios/usuarios.module').then(m => m.UsuariosModule),
     data: {
-      rol: 'administrador'
+      rol: ['administrador']
+    },
+    canActivate: [AuthGuard, RolGuard]
+  },
+  {
+    path: 'turnos',
+    loadChildren: () => import('./pages/turnos/turnos.module').then(m => m.TurnosModule),
+    data: {
+      rol: ['administrador']
     },
     canActivate: [AuthGuard, RolGuard]
   },
@@ -30,11 +38,22 @@ const routes: Routes = [
   {
     path: 'mis-turnos',
     loadChildren: () => import('./pages/mis-turnos/mis-turnos.module').then(m => m.MisTurnosModule),
-    canActivate: [AuthGuard]
+    data: {
+      rol: ['especialista', 'paciente']
+    },
+    canActivate: [AuthGuard, RolGuard]
   },
   {
-    path: 'perfil',
-    loadChildren: () => import('./pages/perfil/perfil.module').then(m => m.PerfilModule),
+    path: 'pacientes',
+    loadChildren: () => import('./pages/pacientes/pacientes.module').then(m => m.PacientesModule),
+    data: {
+      rol: ['especialista']
+    },
+    canActivate: [AuthGuard, RolGuard]
+  },
+  {
+    path: 'mi-perfil',
+    loadChildren: () => import('./pages/mi-perfil/mi-perfil.module').then(m => m.MiPerfilModule),
     canActivate: [AuthGuard]
   }
 ];

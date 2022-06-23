@@ -1,64 +1,337 @@
-<input type="text" class="mb-3" [(ngModel)]="filtro"/>
-<button class="mb-3 me-5" (click)="mostrarFiltrado(filtro)">filtrar</button>
-<button class="mb-3" (click)="mostrarTodos()">todos</button>
-
-<div class="table-responsive">
-  <table class="table align-middle table-hover table-light text-center">
-    <thead>
-      <tr>
-        <th scope="col">#</th>
-        <th scope="col">Especialista</th>
-        <th scope="col">Especialidad</th>
-        <th scope="col">Fecha</th>
-        <th scope="col">Estado</th>
-      </tr>
-    </thead>
-    <tbody *ngIf="turnosPacienteFiltrado.length > 0">
-      <tr *ngFor="let turno of turnosPacienteFiltrado; let i = index">
-        <th scope="row">{{ i + 1 }}</th>
-        <td>
-          {{ turno.especialista.nombre }} {{ turno.especialista.apellido }}
-        </td>
-        <td>{{ turno.especialidad.nombre }}</td>
-        <td>{{ turno.fecha | fecha }}</td>
-        <td>
-          <div class="accordion accordion-flush" id="accordionFlushExample">
-            <div class="accordion-item">
-              <h2 class="accordion-header" id="flush-headingOne">
-                <button
-                  class="accordion-button collapsed"
-                  type="button"
-                  data-bs-toggle="collapse"
-                  [attr.data-bs-target]="'#flush-collapse' + i"
-                  aria-expanded="false"
-                  aria-controls="flush-collapseOne"
+<div *ngIf="estado == 'tabla'">
+  <input
+    type="text"
+    class="form-control mb-3"
+    placeholder="Ingrese una palabra..."
+    [(ngModel)]="filtro"
+    (input)="mostrarFiltrado(filtro)"
+  />
+  <div class="table-responsive">
+    <table class="table align-middle table-hover table-light text-center">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Especialista</th>
+          <th>Especialidad</th>
+          <th>Fecha</th>
+          <th>Estado</th>
+          <th>Accion</th>
+        </tr>
+      </thead>
+      <tbody *ngIf="turnosPacienteFiltrado.length > 0">
+        <tr *ngFor="let turno of turnosPacienteFiltrado; let i = index">
+          <th scope="row">{{ i + 1 }}</th>
+          <td>
+            {{ turno.especialista.nombre }} {{ turno.especialista.apellido }}
+          </td>
+          <td>{{ turno.especialidad.nombre }}</td>
+          <td>{{ turno.fecha | fecha }}</td>
+          <td
+            class="fs-5 fw-bold"
+            [ngClass]="{
+              'text-warning': turno.estado === 'pendiente',
+              'text-danger':
+                turno.estado === 'rechazado' || turno.estado === 'cancelado',
+              'text-info': turno.estado === 'finalizado',
+              'text-success': turno.estado === 'aceptado'
+            }"
+          >
+            {{ turno.estado }}
+          </td>
+          <td>
+            <div class="accordion accordion-flush" id="accordionFlushExample">
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="flush-headingOne">
+                  <button
+                    class="accordion-button collapsed"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    [attr.data-bs-target]="'#flush-collapse' + i"
+                    aria-expanded="false"
+                    aria-controls="flush-collapseOne"
+                  ></button>
+                </h2>
+                <div
+                  id="flush-collapse{{ i }}"
+                  class="accordion-collapse collapse p-2"
+                  aria-labelledby="flush-headingOne"
+                  data-bs-parent="#accordionFlushExample"
                 >
-                  <span class="fs-5 fw-bold text-dark pe-2">{{
-                    turno.estado
-                  }}</span>
-                </button>
-              </h2>
-              <div
-                id="flush-collapse{{ i }}"
-                class="accordion-collapse collapse p-2"
-                aria-labelledby="flush-headingOne"
-                data-bs-parent="#accordionFlushExample"
-              >
-                <button class="btn btn-danger">Cancelar</button>
-                <button class="btn btn-info">Ver Reseña</button>
-                <button class="btn btn-success">Realizar encuesta</button>
-                <button class="btn btn-warning">Calificar atencion</button>
+                  <button
+                    class="btn btn-danger"
+                    *ngIf="
+                      turno.estado == estadoTurno.pendiente ||
+                      turno.estado == estadoTurno.aceptado
+                    "
+                    (click)="
+                      (turnoSeleccionado = turno) && (estado = 'cancelar')
+                    "
+                  >
+                    Cancelar
+                  </button>
+                  <button
+                    class="btn btn-info"
+                    *ngIf="
+                      turno.comentarioCancelacion ||
+                      turno.resenia ||
+                      turno.comentarioRechazo ||
+                      turno.comentarioAtencion
+                    "
+                    (click)="
+                      (turnoSeleccionado = turno) && (estado = 'resenia')
+                    "
+                  >
+                    Ver Reseña
+                  </button>
+                  <button
+                    class="btn btn-success"
+                    *ngIf="
+                      turno.estado == estadoTurno.finalizado &&
+                      turno.resenia &&
+                      !turno.encuesta
+                    "
+                    (click)="
+                      (turnoSeleccionado = turno) && (estado = 'encuesta')
+                    "
+                  >
+                    Realizar encuesta
+                  </button>
+                  <button
+                    class="btn btn-dark"
+                    *ngIf="
+                      turno.estado == estadoTurno.finalizado &&
+                      !turno.comentarioAtencion
+                    "
+                    (click)="
+                      (turnoSeleccionado = turno) && (estado = 'atencion')
+                    "
+                  >
+                    Calificar atencion
+                  </button>
+                </div>
               </div>
             </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div
+    *ngIf="turnosPacienteFiltrado.length == 0 && !listaFiltradaVacia"
+    class="text-center"
+  >
+    <app-loading></app-loading>
+  </div>
+  <div *ngIf="listaFiltradaVacia" class="text-center">
+    <h2><span class="badge">No hay coincidencias</span></h2>
+  </div>
+</div>
+
+<div *ngIf="estado == 'cancelar'">
+  <h2 class="text-center pb-2">
+    <span class="badge bg-form">Cancelar turno</span>
+  </h2>
+  <form [formGroup]="formCancelar" (ngSubmit)="cancelarTurno()">
+    <div class="input-group">
+      <span class="input-group-text">Deje un motivo</span>
+      <textarea
+        appFoco
+        class="form-control text-dark"
+        [ngClass]="{'border border-2 border-danger': (this.formCancelar.controls['comentario'].errors?.['required'] && this.formCancelar.controls['comentario'].touched)}"
+        formControlName="comentario"
+      ></textarea>
+    </div>
+    <button
+      type="submit"
+      class="btn btn-danger w-100 mt-3"
+      [disabled]="formCancelar.invalid"
+    >
+      Cancelar turno
+    </button>
+    <button
+      type="button"
+      class="btn btn-secondary w-100 mt-1"
+      (click)="estado = 'tabla'"
+    >
+      Volver
+    </button>
+  </form>
+</div>
+
+<div *ngIf="estado == 'resenia'">
+  <h2 class="text-center pb-2">
+    <span class="badge bg-form">Comentarios</span>
+  </h2>
+  <div *ngIf="turnoSeleccionado.comentarioCancelacion" class="mb-3">
+    <span class="badge rounded-pill bg-danger fs-5"
+      >Motivo de cancelacion:</span
+    >
+    <span class="fs-5 text-white">
+      {{ turnoSeleccionado.comentarioCancelacion }}</span
+    >
+  </div>
+  <div *ngIf="turnoSeleccionado.comentarioRechazo" class="mb-3">
+    <span class="badge rounded-pill bg-danger fs-5">Motivo de rechazo:</span>
+    <span class="fs-5 text-white">
+      {{ turnoSeleccionado.comentarioRechazo }}</span
+    >
+  </div>
+  <div *ngIf="turnoSeleccionado.comentarioAtencion" class="mb-3">
+    <span class="badge rounded-pill bg-success fs-5"
+      >Calificacion de la atencion:</span
+    >
+    <span class="fs-5 text-white">
+      {{ turnoSeleccionado.comentarioAtencion }}</span
+    >
+  </div>
+  <div *ngIf="turnoSeleccionado.resenia" class="mb-3">
+    <span class="badge rounded-pill bg-info fs-5">Reseña:</span>
+    <span class="fs-5 text-white"> {{ turnoSeleccionado.resenia }}</span>
+  </div>
+  <button
+    type="button"
+    class="btn btn-secondary w-100 mt-1"
+    (click)="estado = 'tabla'"
+  >
+    Volver
+  </button>
+</div>
+
+<div *ngIf="estado == 'encuesta'">
+  <form [formGroup]="formEncuesta" (ngSubmit)="guardarEncuesta()">
+    <fieldset class="reset bg-form rounded">
+      <legend class="reset text-white fs-2">
+        <span class="badge bg-form">Encuesta</span>
+      </legend>
+      <div class="row text-white">
+        <div class="col p-3 m-2 bg-col">
+          <div class="col pb-1 encuesta">
+            <label>Que le parecio la pagina?</label>
           </div>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+          <div class="col">
+            <div class="form-check form-check-inline">
+              <label for="preguntaPagina1" class="form-check-label"
+                >Excelente</label
+              >
+              <input
+                type="radio"
+                class="form-check-input"
+                id="preguntaPagina1"
+                formControlName="preguntaPagina"
+                value="Excelente"
+              />
+            </div>
+            <div class="form-check form-check-inline">
+              <label for="preguntaPagina2" class="form-check-label"
+                >Aceptable</label
+              >
+              <input
+                type="radio"
+                class="form-check-input"
+                id="preguntaPagina2"
+                formControlName="preguntaPagina"
+                value="Aceptable"
+              />
+            </div>
+            <div class="form-check form-check-inline">
+              <label for="preguntaPagina3" class="form-check-label">Mala</label>
+              <input
+                type="radio"
+                class="form-check-input"
+                id="preguntaPagina3"
+                formControlName="preguntaPagina"
+                value="Mala"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="col p-3 m-2 bg-col">
+          <div class="col pb-1 encuesta">
+            <label>Que le parecio la gestion de turnos?</label>
+          </div>
+          <div class="col">
+            <div class="form-check form-check-inline">
+              <label for="preguntaTurnos1" class="form-check-label"
+                >Excelente</label
+              >
+              <input
+                type="radio"
+                class="form-check-input"
+                id="preguntaTurnos1"
+                formControlName="preguntaTurnos"
+                value="Excelente"
+              />
+            </div>
+            <div class="form-check form-check-inline">
+              <label for="preguntaTurnos2" class="form-check-label"
+                >Aceptable</label
+              >
+              <input
+                type="radio"
+                class="form-check-input"
+                id="preguntaTurnos2"
+                formControlName="preguntaTurnos"
+                value="Aceptable"
+              />
+            </div>
+            <div class="form-check form-check-inline">
+              <label for="preguntaTurnos3" class="form-check-label">Mala</label>
+              <input
+                type="radio"
+                class="form-check-input"
+                id="preguntaTurnos3"
+                formControlName="preguntaTurnos"
+                value="Mala"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </fieldset>
+    <button
+      type="submit"
+      class="btn btn-success w-100 mt-3"
+      [disabled]="formEncuesta.invalid"
+    >
+      Enviar encuesta
+    </button>
+    <button
+      type="button"
+      class="btn btn-secondary w-100 mt-1"
+      (click)="estado = 'tabla'"
+    >
+      Volver
+    </button>
+  </form>
 </div>
-<div *ngIf="turnosPacienteFiltrado.length == 0 && !listaFiltradaVacia" class="text-center">
-  <app-loading></app-loading>
-</div>
-<div *ngIf="listaFiltradaVacia" class="text-center">
-  <h2><span class="badge">No hay coincidencias</span></h2>
+
+<div *ngIf="estado == 'atencion'">
+  <h2 class="text-center pb-2">
+    <span class="badge bg-form">Calificar atencion</span>
+  </h2>
+  <form [formGroup]="formAtencion" (ngSubmit)="calificarAtencion()">
+    <div class="input-group">
+      <span class="input-group-text">Deje un comentario</span>
+      <textarea
+        appFoco
+        class="form-control text-dark"
+        [ngClass]="{'border border-2 border-danger': (this.formAtencion.controls['comentario'].errors?.['required'] && this.formAtencion.controls['comentario'].touched)}"
+        formControlName="comentario"
+      ></textarea>
+    </div>
+    <button
+      type="submit"
+      class="btn btn-success w-100 mt-3"
+      [disabled]="formAtencion.invalid"
+    >
+      Enviar calificacion
+    </button>
+    <button
+      type="button"
+      class="btn btn-secondary w-100 mt-1"
+      (click)="estado = 'tabla'"
+    >
+      Volver
+    </button>
+  </form>
 </div>

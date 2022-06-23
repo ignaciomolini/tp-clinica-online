@@ -20,21 +20,37 @@ export class UsuarioService {
         map(usuarios => {
           return usuarios.map((usuario: any) => {
             const data = usuario.payload.doc.data();
-            return { idDb: usuario.payload.doc.id ,...data };
+            return { idDb: usuario.payload.doc.id, ...data };
           })
         })
       )
   }
 
-  agregarUsuario(usuario: Paciente | Especialista | Administrador){
+  traerTodosLosUsuariosEspecialista() {
+    return this.afs.collection(this.nombreColeccion).snapshotChanges()
+      .pipe(
+        map(usuarios => {
+          return usuarios.map((usuario: any) => {
+            const data = usuario.payload.doc.data();
+            return { idDb: usuario.payload.doc.id, ...data };
+          }).filter((usuario: any) => usuario.rol == 'especialista')
+        })
+      )
+  }
+
+  agregarUsuario(usuario: Paciente | Especialista | Administrador) {
     return this.afs.collection(this.nombreColeccion).add(usuario)
   }
 
-  modificarEstadoActivo(id:string, valor: boolean){
-    return this.afs.collection(this.nombreColeccion).doc(id).update({activo: valor});
+  modificarEstadoActivo(id: string, valor: boolean) {
+    return this.afs.collection(this.nombreColeccion).doc(id).update({ activo: valor });
   }
 
-  async subirImagen(imagen: Blob, ruta: string){
+  modificarUsuario(id: string, usuario: Especialista | Paciente | Administrador) {
+    return this.afs.collection(this.nombreColeccion).doc(id).update(usuario);
+  }
+
+  async subirImagen(imagen: Blob, ruta: string) {
     const imgRef = ref(this.storage, ruta);
     const resp = await uploadBytes(imgRef, imagen)
     return getDownloadURL(resp.ref);

@@ -23,6 +23,10 @@ export class TurnoService {
       )
   }
 
+  modificarTurno(id: string, turno: Turno){
+    return this.afs.collection(this.nombreColeccion).doc(id).update(turno);
+  }
+
   agregarTurno(turno: Turno){
     return this.afs.collection(this.nombreColeccion).add(turno);
   }

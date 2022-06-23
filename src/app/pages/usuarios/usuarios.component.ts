@@ -19,7 +19,7 @@ import Swal from 'sweetalert2';
         opacity: 0
       })),
       transition(':enter', [
-        animate("1s cubic-bezier(.17,.67,.88,.1)")
+        animate("1s ease-in")
       ])
     ])
   ]

@@ -1,0 +1,55 @@
+<div class="container">
+  <div class="card mt-4">
+    <div class="card-header">
+      <h1 class="text-center text-white p-3 fw-bold">Pacientes</h1>
+    </div>
+    <div class="card-body">
+      <div class="table-responsive" *ngIf="estado == 'tabla'">
+        <table
+          id="tabla"
+          class="table align-middle table-hover table-light text-center"
+        >
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Nombre</th>
+              <th>Email</th>
+              <th>Obra Social</th>
+              <th>Detalle</th>
+            </tr>
+          </thead>
+          <tbody *ngIf="listaPacientes.length > 0">
+            <tr *ngFor="let paciente of listaPacientes; let i = index">
+              <th>{{ i + 1 }}</th>
+              <td>{{ paciente.nombre }} {{ paciente.apellido }}</td>
+              <td>{{ paciente.email }}</td>
+              <td>{{ paciente.obraSocial }}</td>
+              <td><button (click)="detalle(paciente)">Ver</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div *ngIf="listaPacientes.length == 0" class="text-center">
+        <app-loading></app-loading>
+      </div>
+      <div *ngIf="estado == 'detalle'">
+        <h2 class="text-white text-center mb-3">
+          <img
+              class="back"
+              src="https://img.icons8.com/officel/2x/back.png"
+              width="25px"
+              (click)="estado = 'tabla'"
+            />
+          <span class="badge text-wrap"
+            >Detalle de {{ pacienteSeleccionado.nombre }}
+            {{ pacienteSeleccionado.apellido }}</span
+          >
+        </h2>
+        <app-detalle-paciente
+          [paciente]="pacienteSeleccionado"
+          [especialista]="especialista"
+        ></app-detalle-paciente>
+      </div>
+    </div>
+  </div>
+</div>

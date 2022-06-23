@@ -1,0 +1,28 @@
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    width: 90vw;
+    height: 85vh;
+  }
+  
+  .card {
+    max-width: 70rem;
+    background-color: rgba(240, 248, 255, 0);
+    box-shadow: 7px 7px 20px rgb(39, 74, 120);
+  }
+  
+  .card-body, .card-header, .badge {
+    background: linear-gradient(
+      to top,
+      rgba(74, 116, 170, 0.8),
+      rgba(121, 139, 171, 0.4)
+    );
+  }
+  
+  .back{
+    cursor: pointer;
+  }
+
+  

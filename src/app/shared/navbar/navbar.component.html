@@ -17,7 +17,7 @@
       </a>
     </div>
     <button
-      class="navbar-toggler"
+      class="navbar-toggler mt-3"
       type="button"
       data-bs-toggle="collapse"
       data-bs-target="#navbarToggler"
@@ -40,6 +40,12 @@
           <a class="nav-link" [routerLink]="['usuarios']">Usuarios</a>
         </li>
         <li
+          *ngIf="usuarioDB && usuarioDB.rol == 'especialista'"
+          class="nav-item"
+        >
+          <a class="nav-link" [routerLink]="['pacientes']">Pacientes</a>
+        </li>
+        <li
           *ngIf="
             usuarioDB &&
             (usuarioDB.rol == 'administrador' ||
@@ -49,6 +55,17 @@
         >
           <a class="nav-link" [routerLink]="['solicitar-turno']"
             >Solicitar turno</a
+          >
+        </li>
+        <li
+          *ngIf="
+            usuarioDB &&
+            usuarioDB.rol == 'administrador'
+          "
+          class="nav-item"
+        >
+          <a class="nav-link" [routerLink]="['turnos']"
+            >Turnos</a
           >
         </li>
         <li
@@ -82,7 +99,7 @@
         </a>
         <ul class="dropdown-menu dropdown-menu-end p-0 text-center">
           <li class="nav-item">
-            <a class="nav-link hover text-dark" [routerLink]="['perfil']">Perfil</a>
+            <a class="nav-link hover text-dark" [routerLink]="['mi-perfil']">Perfil</a>
           </li>
           <li>
             <div class="dropdown-divider m-0"></div>

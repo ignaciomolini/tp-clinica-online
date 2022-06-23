@@ -1,0 +1,23 @@
+.bg-uno {
+  background: linear-gradient(
+    to top,
+    rgba(74, 116, 170, 0.8),
+    rgba(121, 139, 171, 0.4)
+  );
+}
+
+ .table-responsive{
+  max-height: 25rem;
+ }
+
+ thead{
+  background-color: rgba(74, 116, 170);
+ }
+
+ tbody>tr:hover{
+  background-color: rgba(121, 139, 171, 0.3);
+}
+
+tr{
+  background-color: rgba(230, 230, 230, 0.3);
+}

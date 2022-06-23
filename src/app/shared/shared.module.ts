@@ -7,8 +7,8 @@ import { FormPacienteComponent } from './form-paciente/form-paciente.component';
 import { FormEspecialistaComponent } from './form-especialista/form-especialista.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormAdministradorComponent } from './form-administrador/form-administrador.component';
-
-
+import { HistoriaClinicaComponent } from './historia-clinica/historia-clinica.component';
+import { PipesModule } from '../pipes/pipes.module';
 
 @NgModule({
   declarations: [
@@ -16,19 +16,22 @@ import { FormAdministradorComponent } from './form-administrador/form-administra
     LoadingComponent,
     FormPacienteComponent,
     FormEspecialistaComponent,
-    FormAdministradorComponent
+    FormAdministradorComponent,
+    HistoriaClinicaComponent
   ],
   imports: [
     CommonModule,
     RouterModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    PipesModule
   ],
   exports: [
     NavbarComponent,
     LoadingComponent,
     FormPacienteComponent,
     FormEspecialistaComponent,
-    FormAdministradorComponent
+    FormAdministradorComponent,
+    HistoriaClinicaComponent
   ]
 })
 export class SharedModule { }

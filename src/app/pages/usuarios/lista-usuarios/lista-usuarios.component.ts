@@ -16,7 +16,9 @@ export class ListaUsuariosComponent implements OnInit {
   listaFiltrada: any[] = [];
   rolSeleccionado: string = 'Todos';
   estadoSeleccionado: string = 'Todos';
+  usuarioSeleccionado: any;
   excel: boolean = false;
+  estado: string = 'tabla';
 
   constructor(private usuariosService: UsuarioService) {
     this.subs = this.usuariosService.traerTodosLosUsuarios().subscribe(usuarios => {
@@ -25,6 +27,16 @@ export class ListaUsuariosComponent implements OnInit {
   }
 
   ngOnInit(): void {
+  }
+
+  mostrarHistoriaClinica(usuario: Paciente){
+    this.usuarioSeleccionado = usuario;
+    this.estado = 'historia clinica';
+  }
+
+  mostrarDetalle(usuario: any){
+    this.usuarioSeleccionado = usuario;
+    this.estado = 'detalle';
   }
 
   cambiarEstado(usuario: Paciente | Especialista) {
@@ -40,17 +52,15 @@ export class ListaUsuariosComponent implements OnInit {
 
     if (this.rolSeleccionado == 'Todos' && this.estadoSeleccionado == 'Todos') {
       this.listaFiltrada = this.listaUsuarios;
-
     } else if (this.rolSeleccionado != 'Todos' && this.estadoSeleccionado == 'Todos') {
       this.listaFiltrada = this.listaUsuarios.filter(usuario => usuario.rol == this.rolSeleccionado);
-
     } else if (this.rolSeleccionado == 'Todos' && this.estadoSeleccionado != 'Todos') {
       this.listaFiltrada = this.listaUsuarios.filter(usuario => usuario.activo == estado);
-
     } else {
       this.listaFiltrada = this.listaUsuarios.filter(usuario => (usuario.activo == estado) &&
         (usuario.rol == this.rolSeleccionado));
     }
+
     this.subs.unsubscribe();
   }
 

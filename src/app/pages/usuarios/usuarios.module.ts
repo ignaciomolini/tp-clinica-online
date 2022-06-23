@@ -7,19 +7,23 @@ import { ListaUsuariosComponent } from './lista-usuarios/lista-usuarios.componen
 import { SharedModule } from 'src/app/shared/shared.module';
 import { FormsModule } from '@angular/forms';
 import { PipesModule } from 'src/app/pipes/pipes.module';
+import { DirectivesModule } from 'src/app/directives/directives.module';
+import { DetalleUsuariosComponent } from './detalle-usuarios/detalle-usuarios.component';
 
 
 @NgModule({
   declarations: [
     UsuariosComponent,
-    ListaUsuariosComponent
+    ListaUsuariosComponent,
+    DetalleUsuariosComponent
   ],
   imports: [
     CommonModule,
     FormsModule,
     UsuariosRoutingModule,
     SharedModule,
-    PipesModule
+    PipesModule,
+    DirectivesModule
   ]
 })
 export class UsuariosModule { }

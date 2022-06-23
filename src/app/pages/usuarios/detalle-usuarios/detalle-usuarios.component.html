@@ -1,0 +1,135 @@
+<div class="card p-4">
+  <div class="row gutters-sm" *ngIf="usuario">
+    <div class="col-md-4 mb-3">
+      <div class="d-flex flex-column align-items-center text-center">
+        <img
+          src="{{ usuario.foto || usuario.foto1 }}"
+          class="foto-perfil1 rounded-circle mx-5 mb-4"
+        />
+      </div>
+    </div>
+    <div class="col-md-8 text-white">
+      <div class="card mb-3">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-sm-4">
+              <h6 class="mb-0">Nombre completo:</h6>
+            </div>
+            <div class="col-sm-8">
+              {{ usuario.nombre }} {{ usuario.apellido }}
+            </div>
+          </div>
+          <hr />
+          <div class="row">
+            <div class="col-sm-4">
+              <h6 class="mb-0">Email:</h6>
+            </div>
+            <div class="col-sm-8">{{ usuario.email }}</div>
+          </div>
+          <hr />
+          <div class="row">
+            <div class="col-sm-4">
+              <h6 class="mb-0">DNI:</h6>
+            </div>
+            <div class="col-sm-8">{{ usuario.dni }}</div>
+          </div>
+          <hr />
+          <div class="row">
+            <div class="col-sm-4">
+              <h6 class="mb-0">Edad:</h6>
+            </div>
+            <div class="col-sm-8">{{ usuario.edad }}</div>
+          </div>
+          <span *ngIf="usuario.rol == 'paciente'">
+            <hr />
+            <div class="row">
+              <div class="col-sm-4">
+                <h6 class="mb-0">Obra social:</h6>
+              </div>
+              <div class="col-sm-8">
+                {{ usuario.obraSocial }}
+              </div>
+            </div>
+          </span>
+          <span *ngIf="usuario.rol == 'especialista'">
+            <hr />
+            <div class="accordion accordion-flush" id="accordionFlushExample">
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="flush-headingOne">
+                  <button
+                    class="accordion-button collapsed text-white"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#flush-collapseOne"
+                    aria-expanded="false"
+                    aria-controls="flush-collapseOne"
+                  >
+                    Especialidades
+                  </button>
+                </h2>
+                <div
+                  id="flush-collapseOne"
+                  class="accordion-collapse collapse"
+                  aria-labelledby="flush-headingOne"
+                  data-bs-parent="#accordionFlushExample"
+                >
+                  <div class="accordion-body p-2">
+                    <ul
+                      class="m-0"
+                      *ngFor="let especialidad of usuario.especialidad"
+                    >
+                      <li class="text-dark">{{ especialidad.nombre }}</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="usuario.rol == 'paciente'">
+    <h3 class="text-white text-center mt-2">
+      <span class="badge bg-uno text-wrap">Turnos</span>
+      <button class="btn btn-excel p-0" (click)="exportarAExcel()">
+        <img src="https://img.icons8.com/color/344/ms-excel.png" width="40px" />
+      </button>
+    </h3>
+    <div class="table-responsive">
+        <table class="table align-middle table-hover table-light text-center" id="tabla">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Especialista</th>
+              <th>Especialidad</th>
+              <th>Fecha</th>
+              <th>Estado</th>
+            </tr>
+          </thead>
+          <tbody *ngIf="turnos.length > 0">
+            <tr *ngFor="let turno of turnos; let i = index">
+              <th scope="row">{{ i + 1 }}</th>
+              <td>
+                {{ turno.especialista.nombre }} {{ turno.especialista.apellido }}
+              </td>
+              <td>{{ turno.especialidad.nombre }}</td>
+              <td>{{ turno.fecha | fecha }}</td>
+              <td
+                class="fs-5 fw-bold"
+                [ngClass]="{
+                  'text-warning': turno.estado === 'pendiente',
+                  'text-danger':
+                    turno.estado === 'rechazado' || turno.estado === 'cancelado',
+                  'text-info': turno.estado === 'finalizado',
+                  'text-success': turno.estado === 'aceptado'
+                }"
+              >
+                {{ turno.estado }}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+  </div>
+</div>

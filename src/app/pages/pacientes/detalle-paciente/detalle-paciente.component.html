@@ -1,0 +1,73 @@
+<div class="card p-4">
+  <div class="row gutters-sm" *ngIf="paciente">
+    <div class="col-md-4 mb-3">
+      <div class="d-flex flex-column align-items-center text-center">
+        <img
+          src="{{ paciente.foto1 }}"
+          class="foto-perfil1 rounded-circle mx-5 mb-4"
+        />
+      </div>
+    </div>
+
+    <div class="col-md-8 text-white">
+      <div class="card mb-3">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-sm-4">
+              <h6 class="mb-0">Nombre completo:</h6>
+            </div>
+            <div class="col-sm-8">
+              {{ paciente.nombre }} {{ paciente.apellido }}
+            </div>
+          </div>
+          <hr />
+          <div class="row">
+            <div class="col-sm-4">
+              <h6 class="mb-0">Email:</h6>
+            </div>
+            <div class="col-sm-8">{{ paciente.email }}</div>
+          </div>
+          <hr />
+          <div class="row">
+            <div class="col-sm-4">
+              <h6 class="mb-0">DNI:</h6>
+            </div>
+            <div class="col-sm-8">{{ paciente.dni }}</div>
+          </div>
+          <hr />
+          <div class="row">
+            <div class="col-sm-4">
+              <h6 class="mb-0">Edad:</h6>
+            </div>
+            <div class="col-sm-8">{{ paciente.edad }}</div>
+          </div>
+          <hr />
+          <div class="row">
+            <div class="col-sm-4">
+              <h6 class="mb-0">Obra social:</h6>
+            </div>
+            <div class="col-sm-8">
+              {{ paciente.obraSocial }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row mt-2">
+    <h3 class="text-white text-center mb-3">
+      <span class="badge text-wrap">Historia clinica ultimos 3 turnos</span>
+    </h3>
+    <div *ngFor="let turno of turnosPaciente">
+      <app-historia-clinica
+        *ngIf="turno.historiaClinica"
+        [paciente]="paciente"
+        [turno]="turno"
+        [modo]="'turno'"
+      ></app-historia-clinica>
+    </div>
+    <div *ngIf="sinHistoriaClinica">
+        <p class="text-center text-white fs-5 mb-0">No posee</p>
+    </div>
+  </div>
+</div>

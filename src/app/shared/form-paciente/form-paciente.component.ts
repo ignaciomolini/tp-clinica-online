@@ -26,7 +26,7 @@ export class FormPacienteComponent implements OnInit {
       Validators.minLength(3)]),
       edad: new FormControl('', [Validators.required, Validators.min(1), Validators.max(99),
       Validators.pattern(/^\d+$/)]),
-      dni: new FormControl('', [Validators.required, Validators.pattern(/^\d+$/)]),
+      dni: new FormControl('', [Validators.required, Validators.pattern(/^\d*\.\d+$/)]),
       obraSocial: new FormControl('', [Validators.required]),
       email: new FormControl('', [Validators.required, Validators.email]),
       password: new FormControl('', [Validators.required, Validators.minLength(6)]),
