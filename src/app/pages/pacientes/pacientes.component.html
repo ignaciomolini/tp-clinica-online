@@ -1,14 +1,11 @@
-<div class="container">
+<div class="container" @entrada>
   <div class="card mt-4">
-    <div class="card-header">
+    <div class="card-header bg-deg-t">
       <h1 class="text-center text-white p-3 fw-bold">Pacientes</h1>
     </div>
-    <div class="card-body">
+    <div class="card-body bg-deg-t">
       <div class="table-responsive" *ngIf="estado == 'tabla'">
-        <table
-          id="tabla"
-          class="table align-middle table-hover table-light text-center"
-        >
+        <table id="tabla" class="table align-middle text-center text-white">
           <thead>
             <tr>
               <th>#</th>
@@ -19,12 +16,16 @@
             </tr>
           </thead>
           <tbody *ngIf="listaPacientes.length > 0">
-            <tr *ngFor="let paciente of listaPacientes; let i = index">
+            <tr *ngFor="let paciente of listaPacientes; let i = index" appLupa>
               <th>{{ i + 1 }}</th>
               <td>{{ paciente.nombre }} {{ paciente.apellido }}</td>
               <td>{{ paciente.email }}</td>
               <td>{{ paciente.obraSocial }}</td>
-              <td><button (click)="detalle(paciente)">Ver</button></td>
+              <td>
+                <button class="btn text-white p-0" (click)="detalle(paciente)">
+                  <span class="badge p-3 bg-uno fs-6"> Ver </span>
+                </button>
+              </td>
             </tr>
           </tbody>
         </table>
@@ -35,12 +36,12 @@
       <div *ngIf="estado == 'detalle'">
         <h2 class="text-white text-center mb-3">
           <img
-              class="back"
-              src="https://img.icons8.com/officel/2x/back.png"
-              width="25px"
-              (click)="estado = 'tabla'"
-            />
-          <span class="badge text-wrap"
+            class="back"
+            src="https://img.icons8.com/officel/2x/back.png"
+            width="25px"
+            (click)="estado = 'tabla'"
+          />
+          <span class="badge text-wrap bg-deg-t"
             >Detalle de {{ pacienteSeleccionado.nombre }}
             {{ pacienteSeleccionado.apellido }}</span
           >

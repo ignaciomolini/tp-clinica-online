@@ -19,11 +19,16 @@ export class MisHorariosComponent implements OnInit {
   dia: number = 0;
   desde: number = 0;
   hasta: number = 0;
+  captcha?: string;
 
   constructor(private toastr: ToastrService, private usuarioService: UsuarioService) {
   }
 
   ngOnInit(): void {
+  }
+
+  cargarCaptcha(captcha: string) {
+    this.captcha = captcha;
   }
 
   setearEspecialidad(especialidad: string) {
@@ -52,41 +57,44 @@ export class MisHorariosComponent implements OnInit {
   }
 
   setearHoraHasta(hasta: string) {
-    this.hasta = parseInt(hasta);
-    if (this.comprobarHorario()) {
-      Swal.fire({
-        icon: 'question',
-        title: 'Desea registrar dia?',
-        html:
-          `<ul class="list-group p-3">
-              <li class="list-group-item"><b>Dia:</b> ${this.dias[this.dia - 1]}</li>
-              <li class="list-group-item"><b>Desde:</b> ${this.desde}:00</li> 
-              <li class="list-group-item"><b>Hasta:</b> ${this.hasta}:00</li> 
-           </ul>`,
-        showDenyButton: true,
-        confirmButtonText: 'Guardar',
-        denyButtonText: 'Cerrar',
-      }).then((result) => {
-        if (result.isConfirmed) {
-          this.agregarrHorario();
-        }
-        this.agregarHorario = false
-      }).catch((error: any) => {
-        this.toastr.error(error.message, "Error", {
+    if (this.captcha) {
+      this.captcha = undefined;
+      this.hasta = parseInt(hasta);
+      if (this.comprobarHorario()) {
+        Swal.fire({
+          icon: 'question',
+          title: 'Desea registrar dia?',
+          html:
+            `<ul class="list-group p-3">
+                <li class="list-group-item"><b>Dia:</b> ${this.dias[this.dia - 1]}</li>
+                <li class="list-group-item"><b>Desde:</b> ${this.desde}:00</li> 
+                <li class="list-group-item"><b>Hasta:</b> ${this.hasta}:00</li> 
+             </ul>`,
+          showDenyButton: true,
+          confirmButtonText: 'Guardar',
+          denyButtonText: 'Cerrar',
+        }).then((result) => {
+          if (result.isConfirmed) {
+            this.agregarrHorario();
+          }
+          this.agregarHorario = false
+        }).catch((error: any) => {
+          this.toastr.error(error.message, "Error", {
+            timeOut: 3000
+          });
+        })
+      } else {
+        this.toastr.error("La franja horaria esta ocupada por otra especialidad", "Error", {
           timeOut: 3000
         });
-      })
-    } else {
-      this.toastr.error("La franja horaria esta ocupada por otra especialidad", "Error", {
-        timeOut: 3000
-      });
+      }
     }
   }
 
   agregarrHorario() {
     let existeDia = false;
     this.especialista.especialidad.forEach((e, i) => {
-      if(!e.horarios){
+      if (!e.horarios) {
         e.horarios = []
       }
       if (e.nombre == this.especialidad) {

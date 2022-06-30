@@ -1,0 +1,43 @@
+<div class="row">
+  <div class="col">
+    <div class="input-group input-group-sm mb-3">
+      <span class="input-group-text">Desde</span>
+      <input
+        type="date"
+        class="form-control"
+        [(ngModel)]="fechaDesde"
+        (input)="cambiarFecha()"
+      />
+    </div>
+  </div>
+  <div class="col">
+    <div class="input-group input-group-sm mb-3">
+      <span class="input-group-text">Hasta</span>
+      <input
+        type="date"
+        class="form-control"
+        [(ngModel)]="fechaHasta"
+        (input)="cambiarFecha()"
+      />
+    </div>
+  </div>
+  <div class="col-2 text-center" *ngIf="chartData.labels && chartData.labels.length > 0">
+    <button class="btn pdf p-0" (click)="crearPdf()">
+      <img
+        src="https://cdn-icons-png.flaticon.com/128/337/337946.png"
+        width="35px"
+      />
+    </button>
+  </div>
+</div>
+
+<canvas
+  id="graficoSolicitado"
+  class="mt-3"
+  baseChart
+  [data]="chartData"
+  [options]="chartOptions"
+  [plugins]="barChartPlugins"
+  [type]="chartType"
+>
+</canvas>

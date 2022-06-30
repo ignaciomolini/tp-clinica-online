@@ -19,7 +19,7 @@ import { Horario } from 'src/app/models/horario';
   animations: [
     trigger('entrada', [
       state('void', style({
-        transform: 'translateX(-10%)',
+        transform: 'translateY(-10%)',
         opacity: 0
       })),
       transition(':enter', [
@@ -42,6 +42,7 @@ export class SolicitarTurnoComponent implements OnInit {
   especialidadElegida: Especialidad = { id: 0, nombre: '', imagen: '' };
   pacienteElegido?: Paciente;
   especialistaElegido?: Especialista;
+  captcha?: string;
   estado: string;
 
   constructor(private usuarioService: UsuarioService, private especialidadService: EspecialidadService,
@@ -112,49 +113,56 @@ export class SolicitarTurnoComponent implements OnInit {
     this.estado = 'horas';
   }
 
+  cargarCaptcha(captcha: string) {
+    this.captcha = captcha;
+  }
+
   async elegirHora(hora: string) {
-    this.horaElegida = hora;
-    if (this.usuarioActual.rol == 'paciente') {
-      this.pacienteElegido = this.usuarioActual as Paciente
-    }
-    Swal.fire({
-      icon: 'question',
-      title: 'Desea guardar su turno?',
-      html:
-        `<ul class="list-group p-3">
-            <li class="list-group-item"><b>Especialidad:</b> ${this.especialidadElegida?.nombre}</li>
-            <li class="list-group-item"><b>Paciente:</b> ${this.pacienteElegido?.nombre} ${this.pacienteElegido?.apellido}</li> 
-            <li class="list-group-item"><b>Especialista:</b> ${this.especialistaElegido?.nombre} 
-            ${this.especialistaElegido?.apellido}</li> 
-            <li class="list-group-item"><b>Dia:</b> ${this.diaElegido?.toLocaleDateString("es", {
-          weekday: "long",
-          month: "long",
-          day: "numeric"
-        })}</li>
-            <li class="list-group-item"><b>Hora:</b> ${this.horaElegida}</li>
-            </ul>`,
-      showDenyButton: true,
-      confirmButtonText: 'Guardar',
-      denyButtonText: 'Cerrar',
-    }).then((result) => {
-      if (result.isConfirmed) {
-        const turno: Turno = {
-          especialista: this.especialistaElegido || {} as Especialista, paciente: this.pacienteElegido
-            || {} as Paciente, especialidad: this.especialidadElegida, estado: estadoTurno.pendiente, fecha: new Date(`${this.diaElegido?.toDateString()}, ${hora}`).getTime()
-        }
-        this.turnoService.agregarTurno(turno).then(() => Swal.fire('Su turno ha sido guardado', '', 'success'))
-          .catch((error: any) => {
-            this.toastr.error(error.message, "Error", {
-              timeOut: 3000
-            });
-          })
+    if (this.captcha || this.usuarioActual.rol == 'administrador') {
+      this.captcha = undefined;
+      this.horaElegida = hora;
+      if (this.usuarioActual.rol == 'paciente') {
+        this.pacienteElegido = this.usuarioActual as Paciente
       }
-      this.estado = (this.usuarioActual.rol == 'administrador') ? 'pacientes' : 'especialidades';
-    }).catch((error: any) => {
-      this.toastr.error(error.message, "Error", {
-        timeOut: 3000
-      });
-    })
+      Swal.fire({
+        icon: 'question',
+        title: 'Desea guardar su turno?',
+        html:
+          `<ul class="list-group p-3">
+              <li class="list-group-item"><b>Especialidad:</b> ${this.especialidadElegida?.nombre}</li>
+              <li class="list-group-item"><b>Paciente:</b> ${this.pacienteElegido?.nombre} ${this.pacienteElegido?.apellido}</li> 
+              <li class="list-group-item"><b>Especialista:</b> ${this.especialistaElegido?.nombre} 
+              ${this.especialistaElegido?.apellido}</li> 
+              <li class="list-group-item"><b>Dia:</b> ${this.diaElegido?.toLocaleDateString("es", {
+            weekday: "long",
+            month: "long",
+            day: "numeric"
+          })}</li>
+              <li class="list-group-item"><b>Hora:</b> ${this.horaElegida}</li>
+              </ul>`,
+        showDenyButton: true,
+        confirmButtonText: 'Guardar',
+        denyButtonText: 'Cerrar',
+      }).then((result) => {
+        if (result.isConfirmed) {
+          const turno: Turno = {
+            especialista: this.especialistaElegido || {} as Especialista, paciente: this.pacienteElegido
+              || {} as Paciente, especialidad: this.especialidadElegida, estado: estadoTurno.pendiente, fecha: new Date(`${this.diaElegido?.toDateString()}, ${hora}`).getTime()
+          }
+          this.turnoService.agregarTurno(turno).then(() => Swal.fire('Su turno ha sido guardado', '', 'success'))
+            .catch((error: any) => {
+              this.toastr.error(error.message, "Error", {
+                timeOut: 3000
+              });
+            })
+        }
+        this.estado = (this.usuarioActual.rol == 'administrador') ? 'pacientes' : 'especialidades';
+      }).catch((error: any) => {
+        this.toastr.error(error.message, "Error", {
+          timeOut: 3000
+        });
+      })
+    }
   }
 
   setearDiasDisponibles(uidEspecialista: string) {
@@ -178,7 +186,7 @@ export class SolicitarTurnoComponent implements OnInit {
                   horasOcupadas.push(`${fecha.getHours()}:${minutos}`);
                 }
               })
-              disponible =  horasAtencion.filter(e => !horasOcupadas.includes(e)).length > 0;
+              disponible = horasAtencion.filter(e => !horasOcupadas.includes(e)).length > 0;
             }
           })
         }
@@ -186,33 +194,6 @@ export class SolicitarTurnoComponent implements OnInit {
       return disponible;
     });
     return diasDisponibles;
-
-    // const diasDisponibles = dias.filter(dia => {
-    //   let horasOcupadas: string[] = [];
-    //   if (dia.getDay() != 6) {
-    //     turnosEspecialista.forEach((turno: Turno) => {
-    //       let fecha = new Date(turno.fecha);
-    //       let minutos = (fecha.getMinutes() == 0) ? '00' : '30';
-    //       if (fecha.toDateString() == dia.toDateString()
-    //         && horasSemana.includes(`${fecha.getHours()}:${minutos}`)) {
-    //         horasOcupadas.push(`${fecha.getHours()}:${minutos}`);
-    //       }
-    //     })
-    //     return horasSemana.filter(e => !horasOcupadas.includes(e)).length > 0;
-    //   } else {
-    //     this.setearHorasDisponibles(uidEspecialista, dia)
-    //     turnosEspecialista.forEach((turno: Turno) => {
-    //       let fecha = new Date(turno.fecha);
-    //       let minutos = (fecha.getMinutes() == 0) ? '00' : '30';
-    //       if (fecha.toDateString() == dia.toDateString()
-    //         && horasSabado.includes(`${fecha.getHours()}:${minutos}`)) {
-    //         horasOcupadas.push(`${fecha.getHours()}:${minutos}`);
-    //       }
-    //     })
-    //     return horasSabado.filter(e => !horasOcupadas.includes(e)).length > 0;
-    //   }
-    // });
-    // return diasDisponibles;
   }
 
   setearHorasDisponibles(uidEspecialista: string, dia: Date) {
@@ -234,31 +215,11 @@ export class SolicitarTurnoComponent implements OnInit {
                 horasOcupadas.push(`${fecha.getHours()}:${minutos}`);
               }
             })
-            horasDisponibles =  horasAtencion.filter(e => !horasOcupadas.includes(e));
+            horasDisponibles = horasAtencion.filter(e => !horasOcupadas.includes(e));
           }
         })
       }
     })
-
-    // if (dia.getDay() != 6) {
-    //   turnosEspecialista.forEach((turno: Turno) => {
-    //     let fecha = new Date(turno.fecha);
-    //     let minutos = (fecha.getMinutes() == 0) ? '00' : '30';
-    //     if (fecha.toDateString() == dia.toDateString() && horasSemana.includes(`${fecha.getHours()}:${minutos}`)) {
-    //       horasOcupadas.push(`${fecha.getHours()}:${minutos}`);
-    //     }
-    //   })
-    //   horasDisponibles = horasSemana.filter(e => !horasOcupadas.includes(e));
-    // } else {
-    //   turnosEspecialista.forEach((turno: Turno) => {
-    //     let fecha = new Date(turno.fecha);
-    //     let minutos = (fecha.getMinutes() == 0) ? '00' : '30';
-    //     if (fecha.toDateString() == dia.toDateString() && horasSabado.includes(`${fecha.getHours()}:${minutos}`)) {
-    //       horasOcupadas.push(`${fecha.getHours()}:${minutos}`);
-    //     }
-    //   })
-    //   horasDisponibles = horasSabado.filter(e => !horasOcupadas.includes(e));
-    // }
     return horasDisponibles;
   }
 

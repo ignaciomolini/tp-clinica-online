@@ -9,6 +9,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { FormAdministradorComponent } from './form-administrador/form-administrador.component';
 import { HistoriaClinicaComponent } from './historia-clinica/historia-clinica.component';
 import { PipesModule } from '../pipes/pipes.module';
+import { DirectivesModule } from '../directives/directives.module';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { PipesModule } from '../pipes/pipes.module';
     CommonModule,
     RouterModule,
     ReactiveFormsModule,
-    PipesModule
+    PipesModule,
+    DirectivesModule
   ],
   exports: [
     NavbarComponent,

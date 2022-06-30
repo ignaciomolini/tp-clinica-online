@@ -31,7 +31,8 @@ export class FormEspecialistaComponent implements OnInit {
       especialidades: new FormArray([], [Validators.required]),
       email: new FormControl('', [Validators.required, Validators.email]),
       password: new FormControl('', [Validators.required, Validators.minLength(6)]),
-      foto: new FormControl('', [Validators.required])
+      foto: new FormControl('', [Validators.required]),
+      captcha: new FormControl('', [Validators.required])
     })
   }
 
@@ -39,7 +40,7 @@ export class FormEspecialistaComponent implements OnInit {
     const especialidades = (this.formRegister.controls['especialidades'] as FormArray);
     if (event.target.checked) {
       this.especialidades.forEach(esp => {
-        if(event.target.value == esp.id){
+        if (event.target.value == esp.id) {
           especialidades.push(new FormControl(esp));
         }
       })
@@ -55,12 +56,20 @@ export class FormEspecialistaComponent implements OnInit {
     });
   }
 
+  cargarCaptcha(respuesta: string) {
+    this.formRegister.controls['captcha'].setValue(respuesta);
+  }
+
   async enviarEspecialista() {
     try {
       this.mostrarLoading = true;
-      const especialista: Especialista = this.formRegister.getRawValue();
-      especialista.nombre = this.pasarAMayus(especialista.nombre);
-      especialista.apellido = this.pasarAMayus(especialista.apellido);
+      const especialista: Especialista = {} as Especialista;
+      especialista.nombre = this.pasarAMayus(this.formRegister.controls['nombre'].value);
+      especialista.apellido = this.pasarAMayus(this.formRegister.controls['apellido'].value);
+      especialista.edad = this.formRegister.controls['edad'].value;
+      especialista.dni = this.formRegister.controls['dni'].value;
+      especialista.email = this.formRegister.controls['apellido'].value;
+      especialista.password = this.formRegister.controls['apellido'].value;
       especialista.foto = await this.usuarioService.subirImagen(this.imagen,
         `fotos-perfil/especialistas/${especialista.dni}-${Date.now()}`);
       especialista.activo = false;
@@ -74,7 +83,6 @@ export class FormEspecialistaComponent implements OnInit {
       this.mostrarLoading = false;
     }
   }
-
 
   async agregarNuevaEspecialidad() {
     let resp = false;
@@ -108,7 +116,7 @@ export class FormEspecialistaComponent implements OnInit {
           })
         }
       }
-    } catch (error) {}
+    } catch (error) { }
   }
 
   pasarAMayus(frase: string) {

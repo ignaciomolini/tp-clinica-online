@@ -5,7 +5,7 @@ import { Directive, ElementRef, HostListener, Renderer2 } from '@angular/core';
 })
 export class LupaDirective {
 
-  constructor(private elementRef: ElementRef, private rederer2: Renderer2) {
+  constructor(private elementRef: ElementRef, private renderer2: Renderer2) {
   }
 
   @HostListener('click') onMouseEnter() {
@@ -18,8 +18,8 @@ export class LupaDirective {
 
   private lupa(fs: string, fw: string) {
     const el = this.elementRef.nativeElement;
-    this.rederer2.setStyle(el, 'font-size', fs)
-    this.rederer2.setStyle(el, 'font-weight', fw)
+    this.renderer2.setStyle(el, 'font-size', fs)
+    this.renderer2.setStyle(el, 'font-weight', fw)
   }
 
 }

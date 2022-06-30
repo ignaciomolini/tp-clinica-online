@@ -16,7 +16,7 @@ import { UsuarioService } from 'src/app/services/usuario.service';
       transition(':enter', [
         animate("1s ease-in")
       ])
-    ])
+    ]),
   ]
 })
 export class HomeComponent implements OnInit {

@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { SolicitarTurnoRoutingModule } from './solicitar-turno-routing.module';
 import { SolicitarTurnoComponent } from './solicitar-turno.component';
 import { SharedModule } from 'src/app/shared/shared.module';
+import { DirectivesModule } from 'src/app/directives/directives.module';
 
 
 @NgModule({
@@ -13,7 +14,8 @@ import { SharedModule } from 'src/app/shared/shared.module';
   imports: [
     CommonModule,
     SolicitarTurnoRoutingModule,
-    SharedModule
+    SharedModule,
+    DirectivesModule
   ]
 })
 export class SolicitarTurnoModule { }

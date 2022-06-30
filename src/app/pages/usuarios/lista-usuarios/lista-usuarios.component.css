@@ -1,22 +1,6 @@
-td {
-  height: 4rem;
-  padding: 0 1rem 0 1rem;
-}
 
 .table-responsive {
   max-height: 30rem;
-}
-
-thead{
-  background-color: rgba(74, 116, 170);
- }
-
- tbody>tr:hover{
-  background-color: rgba(121, 139, 171, 0.3);
-}
-
-tr{
-  background-color: rgba(230, 230, 230, 0.3);
 }
 
 .btn-excel:active{
@@ -31,12 +15,12 @@ tr{
   -webkit-box-shadow: none;
 }
 
-.bg-uno{
-  background: linear-gradient(
-      to top,
-      rgba(74, 116, 170, 0.8),
-      rgba(121, 139, 171, 0.4)
-    );
+.bg-uno {
+  background-color: rgba(230, 230, 230, 0.4);
+}
+
+.bg-uno:hover{
+  background-color: rgba(230, 230, 230, 0.8);
 }
 
 .back{

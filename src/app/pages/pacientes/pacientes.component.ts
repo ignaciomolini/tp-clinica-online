@@ -1,14 +1,25 @@
+import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Component, OnInit } from '@angular/core';
 import { Especialista } from 'src/app/models/especialista';
 import { Paciente } from 'src/app/models/paciente';
 import { Turno } from 'src/app/models/turno';
 import { TurnoService } from 'src/app/services/turno.service';
-import { UsuarioService } from 'src/app/services/usuario.service';
 
 @Component({
   selector: 'app-pacientes',
   templateUrl: './pacientes.component.html',
-  styleUrls: ['./pacientes.component.css']
+  styleUrls: ['./pacientes.component.css'],
+  animations: [
+    trigger('entrada', [
+      state('void', style({
+        transform: 'translateX(+10%)',
+        opacity: 0
+      })),
+      transition(':enter', [
+        animate("1s ease-in")
+      ])
+    ])
+  ]
 })
 export class PacientesComponent implements OnInit {
   listaPacientes: Paciente[] = [];

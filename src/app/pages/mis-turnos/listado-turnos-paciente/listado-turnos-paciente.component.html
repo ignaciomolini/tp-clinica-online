@@ -7,7 +7,7 @@
     (input)="mostrarFiltrado(filtro)"
   />
   <div class="table-responsive">
-    <table class="table align-middle table-hover table-light text-center">
+    <table class="table align-middle text-center text-white">
       <thead>
         <tr>
           <th>#</th>
@@ -19,31 +19,33 @@
         </tr>
       </thead>
       <tbody *ngIf="turnosPacienteFiltrado.length > 0">
-        <tr *ngFor="let turno of turnosPacienteFiltrado; let i = index">
+        <tr *ngFor="let turno of turnosPacienteFiltrado; let i = index" appLupa appBgTurnos [estado]="turno.estado">
           <th scope="row">{{ i + 1 }}</th>
           <td>
             {{ turno.especialista.nombre }} {{ turno.especialista.apellido }}
           </td>
           <td>{{ turno.especialidad.nombre }}</td>
           <td>{{ turno.fecha | fecha }}</td>
-          <td
-            class="fs-5 fw-bold"
-            [ngClass]="{
-              'text-warning': turno.estado === 'pendiente',
-              'text-danger':
-                turno.estado === 'rechazado' || turno.estado === 'cancelado',
-              'text-info': turno.estado === 'finalizado',
-              'text-success': turno.estado === 'aceptado'
-            }"
-          >
-            {{ turno.estado }}
+          <td class="fs-3 fw-bold">
+            <span
+              class="badge bg-uno p-3"
+              [ngClass]="{
+                'text-warning': turno.estado === 'pendiente',
+                'text-danger':
+                  turno.estado === 'rechazado' ||
+                  turno.estado === 'cancelado',
+                'text-info': turno.estado === 'finalizado',
+                'text-success': turno.estado === 'aceptado'
+              }"
+              >{{ turno.estado | uppercase }}</span
+            >
           </td>
           <td>
             <div class="accordion accordion-flush" id="accordionFlushExample">
-              <div class="accordion-item">
+              <div class="accordion-item bg-uno">
                 <h2 class="accordion-header" id="flush-headingOne">
                   <button
-                    class="accordion-button collapsed"
+                    class="accordion-button collapsed bg-uno"
                     type="button"
                     data-bs-toggle="collapse"
                     [attr.data-bs-target]="'#flush-collapse' + i"
@@ -129,7 +131,7 @@
 
 <div *ngIf="estado == 'cancelar'">
   <h2 class="text-center pb-2">
-    <span class="badge bg-form">Cancelar turno</span>
+    <span class="badge bg-deg-t">Cancelar turno</span>
   </h2>
   <form [formGroup]="formCancelar" (ngSubmit)="cancelarTurno()">
     <div class="input-group">
@@ -141,6 +143,7 @@
         formControlName="comentario"
       ></textarea>
     </div>
+    <div appCaptcha (respuesta)="cargarCaptchaCancelar($event)"></div>
     <button
       type="submit"
       class="btn btn-danger w-100 mt-3"
@@ -151,7 +154,7 @@
     <button
       type="button"
       class="btn btn-secondary w-100 mt-1"
-      (click)="estado = 'tabla'"
+      (click)="(estado = 'tabla') && formCancelar.controls['captcha'].setValue(null)"
     >
       Volver
     </button>
@@ -160,7 +163,7 @@
 
 <div *ngIf="estado == 'resenia'">
   <h2 class="text-center pb-2">
-    <span class="badge bg-form">Comentarios</span>
+    <span class="badge bg-deg-t">Comentarios</span>
   </h2>
   <div *ngIf="turnoSeleccionado.comentarioCancelacion" class="mb-3">
     <span class="badge rounded-pill bg-danger fs-5"
@@ -199,12 +202,12 @@
 
 <div *ngIf="estado == 'encuesta'">
   <form [formGroup]="formEncuesta" (ngSubmit)="guardarEncuesta()">
-    <fieldset class="reset bg-form rounded">
+    <fieldset class="reset bg-deg-t rounded">
       <legend class="reset text-white fs-2">
-        <span class="badge bg-form">Encuesta</span>
+        <span class="badge bg-deg-t">Encuesta</span>
       </legend>
       <div class="row text-white">
-        <div class="col p-3 m-2 bg-col">
+        <div class="col p-3 m-2 bg-deg-b dat-en">
           <div class="col pb-1 encuesta">
             <label>Que le parecio la pagina?</label>
           </div>
@@ -245,7 +248,7 @@
             </div>
           </div>
         </div>
-        <div class="col p-3 m-2 bg-col">
+        <div class="col p-3 m-2 bg-deg-b dat-en">
           <div class="col pb-1 encuesta">
             <label>Que le parecio la gestion de turnos?</label>
           </div>
@@ -288,6 +291,7 @@
         </div>
       </div>
     </fieldset>
+    <div appCaptcha (respuesta)="cargarCaptchaEncuesta($event)"></div>
     <button
       type="submit"
       class="btn btn-success w-100 mt-3"
@@ -298,7 +302,7 @@
     <button
       type="button"
       class="btn btn-secondary w-100 mt-1"
-      (click)="estado = 'tabla'"
+      (click)="(estado = 'tabla') && formEncuesta.controls['captcha'].setValue(null)"
     >
       Volver
     </button>
@@ -307,7 +311,7 @@
 
 <div *ngIf="estado == 'atencion'">
   <h2 class="text-center pb-2">
-    <span class="badge bg-form">Calificar atencion</span>
+    <span class="badge bg-deg-t">Calificar atencion</span>
   </h2>
   <form [formGroup]="formAtencion" (ngSubmit)="calificarAtencion()">
     <div class="input-group">
@@ -319,6 +323,7 @@
         formControlName="comentario"
       ></textarea>
     </div>
+    <div appCaptcha (respuesta)="cargarCaptchaAtencion($event)"></div>
     <button
       type="submit"
       class="btn btn-success w-100 mt-3"
@@ -329,7 +334,7 @@
     <button
       type="button"
       class="btn btn-secondary w-100 mt-1"
-      (click)="estado = 'tabla'"
+      (click)="(estado = 'tabla') && formAtencion.controls['captcha'].setValue(null)"
     >
       Volver
     </button>

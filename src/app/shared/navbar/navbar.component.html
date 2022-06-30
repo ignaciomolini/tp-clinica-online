@@ -48,8 +48,7 @@
         <li
           *ngIf="
             usuarioDB &&
-            (usuarioDB.rol == 'administrador' ||
-              usuarioDB.rol == 'paciente')
+            (usuarioDB.rol == 'administrador' || usuarioDB.rol == 'paciente')
           "
           class="nav-item"
         >
@@ -58,27 +57,25 @@
           >
         </li>
         <li
-          *ngIf="
-            usuarioDB &&
-            usuarioDB.rol == 'administrador'
-          "
+          *ngIf="usuarioDB && usuarioDB.rol == 'administrador'"
           class="nav-item"
         >
-          <a class="nav-link" [routerLink]="['turnos']"
-            >Turnos</a
-          >
+          <a class="nav-link" [routerLink]="['turnos']">Turnos</a>
         </li>
         <li
           *ngIf="
             usuarioDB &&
-            (usuarioDB.rol == 'especialista' ||
-              usuarioDB.rol == 'paciente')
+            (usuarioDB.rol == 'especialista' || usuarioDB.rol == 'paciente')
           "
           class="nav-item"
         >
-          <a class="nav-link" [routerLink]="['mis-turnos']"
-            >Mis turnos</a
-          >
+          <a class="nav-link" [routerLink]="['mis-turnos']">Mis turnos</a>
+        </li>
+        <li
+          *ngIf="usuarioDB && usuarioDB.rol == 'administrador'"
+          class="nav-item"
+        >
+          <a class="nav-link" [routerLink]="['informes']">Informes</a>
         </li>
       </ul>
 
@@ -99,7 +96,9 @@
         </a>
         <ul class="dropdown-menu dropdown-menu-end p-0 text-center">
           <li class="nav-item">
-            <a class="nav-link hover text-dark" [routerLink]="['mi-perfil']">Perfil</a>
+            <a class="nav-link hover text-dark" [routerLink]="['mi-perfil']"
+              >Perfil</a
+            >
           </li>
           <li>
             <div class="dropdown-divider m-0"></div>

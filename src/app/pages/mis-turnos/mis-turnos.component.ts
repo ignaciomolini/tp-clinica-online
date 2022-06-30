@@ -11,7 +11,7 @@ import { Observable, Subject } from 'rxjs';
   animations: [
     trigger('entrada', [
       state('void', style({
-        transform: 'translateX(-10%)',
+        transform: 'translateY(-10%)',
         opacity: 0
       })),
       transition(':enter', [

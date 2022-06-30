@@ -27,13 +27,16 @@ export class ListadoTurnosPacienteComponent implements OnInit {
   constructor(private fb: FormBuilder, private turnoService: TurnoService, private toastr: ToastrService) {
     this.formCancelar = this.fb.group({
       comentario: new FormControl('', [Validators.required]),
+      captcha: new FormControl('', [Validators.required])
     });
     this.formAtencion = this.fb.group({
       comentario: new FormControl('', [Validators.required]),
+      captcha: new FormControl('', [Validators.required])
     });
     this.formEncuesta = this.fb.group({
       preguntaPagina: new FormControl('', [Validators.required]),
-      preguntaTurnos: new FormControl('', [Validators.required])
+      preguntaTurnos: new FormControl('', [Validators.required]),
+      captcha: new FormControl('', [Validators.required])
     });
   }
 
@@ -42,6 +45,18 @@ export class ListadoTurnosPacienteComponent implements OnInit {
       this.turnosPacienteFiltrado = turnos.slice();
       this.turnosPacienteCompleto = turnos;
     })
+  }
+
+  cargarCaptchaCancelar(captcha: string){
+    this.formCancelar.controls['captcha'].setValue(captcha);
+  }
+
+  cargarCaptchaAtencion(captcha: string){
+    this.formAtencion.controls['captcha'].setValue(captcha);
+  }
+
+  cargarCaptchaEncuesta(captcha: string){
+    this.formEncuesta.controls['captcha'].setValue(captcha);
   }
 
   mostrarTodos() {

@@ -6,6 +6,7 @@ import { PacientesComponent } from './pacientes.component';
 import { PipesModule } from 'src/app/pipes/pipes.module';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { DetallePacienteComponent } from './detalle-paciente/detalle-paciente.component';
+import { DirectivesModule } from 'src/app/directives/directives.module';
 
 
 @NgModule({
@@ -17,7 +18,8 @@ import { DetallePacienteComponent } from './detalle-paciente/detalle-paciente.co
     CommonModule,
     PacientesRoutingModule,
     PipesModule,
-    SharedModule
+    SharedModule,
+    DirectivesModule
   ]
 })
 export class PacientesModule { }

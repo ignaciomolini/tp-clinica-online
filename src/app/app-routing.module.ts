@@ -31,6 +31,14 @@ const routes: Routes = [
     canActivate: [AuthGuard, RolGuard]
   },
   {
+    path: 'informes',
+    loadChildren: () => import('./pages/informes/informes.module').then(m => m.InformesModule),
+    data: {
+      rol: ['administrador']
+    },
+    canActivate: [AuthGuard, RolGuard]
+  },
+  {
     path: 'solicitar-turno',
     loadChildren: () => import('./pages/solicitar-turno/solicitar-turno.module').then(m => m.SolicitarTurnoModule),
     canActivate: [AuthGuard]

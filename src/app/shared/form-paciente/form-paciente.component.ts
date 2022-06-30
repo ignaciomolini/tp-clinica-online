@@ -26,25 +26,34 @@ export class FormPacienteComponent implements OnInit {
       Validators.minLength(3)]),
       edad: new FormControl('', [Validators.required, Validators.min(1), Validators.max(99),
       Validators.pattern(/^\d+$/)]),
-      dni: new FormControl('', [Validators.required, Validators.pattern(/^\d*\.\d+$/)]),
+      dni: new FormControl('', [Validators.required, Validators.pattern(/^\d+$/)]),
       obraSocial: new FormControl('', [Validators.required]),
       email: new FormControl('', [Validators.required, Validators.email]),
       password: new FormControl('', [Validators.required, Validators.minLength(6)]),
       foto1: new FormControl('', [Validators.required]),
-      foto2: new FormControl('', [Validators.required])
+      foto2: new FormControl('', [Validators.required]),
+      captcha: new FormControl('', [Validators.required])
     })
   }
 
   ngOnInit(): void {
   }
 
+  cargarCaptcha(respuesta: string){
+    this.formRegister.controls['captcha'].setValue(respuesta);
+  }
+
   async enviarPaciente() {
     try {
       this.mostrarLoading = true;
-      const paciente: Paciente = this.formRegister.getRawValue();
-      paciente.nombre = this.pasarAMayus(paciente.nombre);
-      paciente.apellido = this.pasarAMayus(paciente.apellido);
-      paciente.obraSocial = this.pasarAMayus(paciente.obraSocial);
+      const paciente: Paciente = {} as Paciente;
+      paciente.nombre = this.pasarAMayus(this.formRegister.controls['nombre'].value);
+      paciente.apellido = this.pasarAMayus(this.formRegister.controls['apellido'].value);
+      paciente.obraSocial = this.pasarAMayus(this.formRegister.controls['obraSocial'].value);
+      paciente.dni = this.formRegister.controls['dni'].value;
+      paciente.edad = this.formRegister.controls['edad'].value;
+      paciente.email = this.formRegister.controls['email'].value;
+      paciente.password = this.formRegister.controls['password'].value;
       paciente.foto1 = await this.usuarioService.subirImagen(this.imagenUno,
         `fotos-perfil/pacientes/1-${paciente.dni}-${Date.now()}`);
       paciente.foto2 = await this.usuarioService.subirImagen(this.imagenDos,

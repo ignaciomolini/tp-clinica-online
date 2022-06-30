@@ -7,7 +7,7 @@
     (input)="mostrarFiltrado(filtro)"
   />
   <div class="table-responsive">
-    <table class="table align-middle table-hover table-light text-center">
+    <table class="table align-middle text-center text-white">
       <thead>
         <tr>
           <th>#</th>
@@ -19,29 +19,31 @@
         </tr>
       </thead>
       <tbody *ngIf="turnosEspecialistaFiltrado.length > 0">
-        <tr *ngFor="let turno of turnosEspecialistaFiltrado; let i = index">
+        <tr *ngFor="let turno of turnosEspecialistaFiltrado; let i = index" appLupa appBgTurnos [estado]="turno.estado">
           <th scope="row">{{ i + 1 }}</th>
           <td>{{ turno.paciente.nombre }} {{ turno.paciente.apellido }}</td>
           <td>{{ turno.especialidad.nombre }}</td>
           <td>{{ turno.fecha | fecha }}</td>
-          <td
-            class="fs-5 fw-bold"
-            [ngClass]="{
-              'text-warning': turno.estado === 'pendiente',
-              'text-danger':
-                turno.estado === 'rechazado' || turno.estado === 'cancelado',
-              'text-info': turno.estado === 'finalizado',
-              'text-success': turno.estado === 'aceptado'
-            }"
-          >
-            {{ turno.estado }}
+          <td class="fs-3 fw-bold">
+            <span
+              class="badge bg-uno p-3"
+              [ngClass]="{
+                'text-warning': turno.estado === 'pendiente',
+                'text-danger':
+                  turno.estado === 'rechazado' ||
+                  turno.estado === 'cancelado',
+                'text-info': turno.estado === 'finalizado',
+                'text-success': turno.estado === 'aceptado'
+              }"
+              >{{ turno.estado | uppercase }}</span
+            >
           </td>
           <td>
             <div class="accordion accordion-flush" id="accordionFlushExample">
-              <div class="accordion-item">
+              <div class="accordion-item bg-uno">
                 <h2 class="accordion-header" id="flush-headingOne">
                   <button
-                    class="accordion-button collapsed"
+                    class="accordion-button collapsed bg-uno"
                     type="button"
                     data-bs-toggle="collapse"
                     [attr.data-bs-target]="'#flush-collapse' + i"
@@ -129,7 +131,7 @@
 
 <div *ngIf="estado == 'cancelar'">
   <h2 class="text-center pb-2">
-    <span class="badge bg-form">Cancelar turno</span>
+    <span class="badge bg-deg-t">Cancelar turno</span>
   </h2>
   <form [formGroup]="formCancelar" (ngSubmit)="cancelarTurno()">
     <div class="input-group">
@@ -141,6 +143,7 @@
         formControlName="comentario"
       ></textarea>
     </div>
+    <div appCaptcha (respuesta)="cargarCaptchaCancelar($event)"></div>
     <button
       type="submit"
       class="btn btn-danger w-100 mt-3"
@@ -151,7 +154,7 @@
     <button
       type="button"
       class="btn btn-secondary w-100 mt-1"
-      (click)="estado = 'tabla'"
+      (click)="(estado = 'tabla') && formCancelar.controls['captcha'].setValue(null)"
     >
       Volver
     </button>
@@ -160,7 +163,7 @@
 
 <div *ngIf="estado == 'rechazar'">
   <h2 class="text-center pb-2">
-    <span class="badge bg-form">Rechazar turno</span>
+    <span class="badge bg-deg-t">Rechazar turno</span>
   </h2>
   <form [formGroup]="formRechazar" (ngSubmit)="rechazarTurno()">
     <div class="input-group">
@@ -172,6 +175,7 @@
         formControlName="comentario"
       ></textarea>
     </div>
+    <div appCaptcha (respuesta)="cargarCaptchaRechazar($event)"></div>
     <button
       type="submit"
       class="btn btn-danger w-100 mt-3"
@@ -182,7 +186,7 @@
     <button
       type="button"
       class="btn btn-secondary w-100 mt-1"
-      (click)="estado = 'tabla'"
+      (click)="(estado = 'tabla') && formRechazar.controls['captcha'].setValue(null)"
     >
       Volver
     </button>
@@ -191,19 +195,21 @@
 
 <div *ngIf="estado == 'aceptar'">
   <h2 class="text-center">
-    <span class="badge bg-form">Desea aceptar el turno?</span>
+    <span class="badge bg-deg-t">Desea aceptar el turno?</span>
   </h2>
+  <div appCaptcha (respuesta)="cargarCaptchaAceptar($event)"></div>
   <button
     type="button"
     class="btn btn-success w-100 mt-2"
     (click)="aceptarTurno()"
+    [attr.disabled]="captchaAceptar?null:true"
   >
     Aceptar turno
   </button>
   <button
     type="button"
     class="btn btn-secondary w-100 mt-1"
-    (click)="estado = 'tabla'"
+    (click)="(estado = 'tabla') && captchaAceptar = undefined"
   >
     Volver
   </button>
@@ -211,15 +217,14 @@
 
 <div *ngIf="estado == 'finalizar'">
   <form [formGroup]="formFinalizar" (ngSubmit)="finalizarTurno()">
-    <fieldset class="reset bg-form rounded mb-2 pb-3">
+    <fieldset class="reset rounded mb-2 pb-3">
       <legend class="reset text-white fs-4">
-        <span class="badge bg-form">Historia clinica</span>
+        <span class="badge bg-deg-t">Historia clinica</span>
       </legend>
       <h2 class="text-center text-white fs-5">Datos obligatorios</h2>
       <div class="row text-white">
-        <div class="col bg-col">
+        <div class="col dat-ob bg-deg-b">
           <input
-            appFoco
             type="text"
             class="form-control text-dark"
             placeholder="Altura (metros)"
@@ -229,7 +234,7 @@
             formControlName="altura"
           />
         </div>
-        <div class="col bg-col">
+        <div class="col dat-ob bg-deg-b">
           <input
             type="text"
             class="form-control text-dark"
@@ -242,7 +247,7 @@
         </div>
       </div>
       <div class="row text-white">
-        <div class="col bg-col">
+        <div class="col dat-ob bg-deg-b">
           <input
             type="text"
             class="form-control text-dark"
@@ -253,7 +258,7 @@
             formControlName="temperatura"
           />
         </div>
-        <div class="col bg-col">
+        <div class="col dat-ob bg-deg-b">
           <input
             type="text"
             class="form-control text-dark"
@@ -284,13 +289,13 @@
             placeholder="Valor del dato 1"
             formControlName="valor1"
             (input)="actualizarInput()"
-            [readonly]="formFinalizar.controls['clave1'].value == ''"
+            [readonly]="!formFinalizar.controls['clave1'].value"
           />
         </div>
       </div>
       <div
         class="row text-white mt-2"
-        *ngIf="formFinalizar.controls['valor1'].value != ''"
+        *ngIf="formFinalizar.controls['valor1'].value"
       >
         <div class="col">
           <input
@@ -298,7 +303,7 @@
             class="form-control text-dark"
             placeholder="Nombre del dato 2 "
             formControlName="clave2"
-            (input)="actualizarInput2()"
+            (input)="actualizarInput()"
           />
         </div>
         <div class="col">
@@ -307,16 +312,16 @@
             class="form-control text-dark"
             placeholder="Valor del dato 2"
             formControlName="valor2"
-            (input)="actualizarInput2()"
-            [readonly]="formFinalizar.controls['clave2'].value == ''"
+            (input)="actualizarInput()"
+            [readonly]="!formFinalizar.controls['clave2'].value"
           />
         </div>
       </div>
       <div
         class="row text-white mt-2"
         *ngIf="
-          formFinalizar.controls['valor1'].value != '' &&
-          formFinalizar.controls['valor2'].value != ''
+          formFinalizar.controls['valor1'].value &&
+          formFinalizar.controls['valor2'].value
         "
       >
         <div class="col">
@@ -325,7 +330,7 @@
             class="form-control text-dark"
             placeholder="Nombre del dato 3"
             formControlName="clave3"
-            (input)="actualizarInput3()"
+            (input)="actualizarInput()"
           />
         </div>
         <div class="col">
@@ -334,15 +339,100 @@
             class="form-control text-dark"
             placeholder="Valor del dato 3"
             formControlName="valor3"
-            (input)="actualizarInput3()"
-            [readonly]="formFinalizar.controls['clave3'].value == ''"
+            (input)="actualizarInput()"
+            [readonly]="!formFinalizar.controls['clave3'].value"
           />
         </div>
       </div>
+      <div class="row text-white mt-2">
+        <div class="col">
+          <input
+            type="text"
+            class="form-control text-dark"
+            placeholder="Nombre del dato 4"
+            formControlName="clave4"
+            (input)="actualizarInput()"
+          />
+        </div>
+        <div class="col d-flex align-items-center">
+          <span>0</span>
+          <input
+            type="range"
+            class="form-range px-2"
+            min="0"
+            max="100"
+            formControlName="valor4"
+            (input)="actualizarInput()"
+            [attr.disabled]="formFinalizar.controls['clave4'].value? null : true"
+          />
+          <span>100</span>
+          <span class="badge ps-3 fs-6">{{
+            this.formFinalizar.controls["valor4"].value
+          }}</span>
+        </div>
+      </div>
+      <div class="row text-white mt-2">
+        <div class="col">
+          <input
+            type="text"
+            class="form-control text-dark"
+            placeholder="Nombre del dato 5"
+            formControlName="clave5"
+            (input)="actualizarInput()"
+          />
+        </div>
+        <div class="col">
+          <input
+            type="number"
+            class="form-control text-dark"
+            placeholder="Valor del dato 5"
+            formControlName="valor5"
+            (input)="actualizarInput()"
+            [readonly]="!formFinalizar.controls['clave5'].value"
+          />
+        </div>
+      </div>
+      <div class="row text-white mt-2">
+        <div class="col">
+          <input
+            type="text"
+            class="form-control text-dark"
+            placeholder="Nombre del dato 6"
+            formControlName="clave6"
+            (input)="actualizarInput()"
+          />
+        </div>
+        <div class="col d-flex justify-content-center align-items-center">
+          <span
+            [ngClass]="{
+              'text-danger': formFinalizar.controls['valor6'].value === false
+            }"
+            >No</span
+          >
+          <div
+            class="form-check form-switch d-flex justify-content-center align-items-center"
+          >
+            <input
+              class="form-check-input"
+              type="checkbox"
+              role="switch"
+              formControlName="valor6"
+              (input)="actualizarInput()"
+              [attr.disabled]="formFinalizar.controls['clave6'].value? null : true"
+            />
+          </div>
+          <span
+            [ngClass]="{
+              'text-success': formFinalizar.controls['valor6'].value
+            }"
+            >Si</span
+          >
+        </div>
+      </div>
     </fieldset>
-    <fieldset class="reset bg-form rounded">
+    <fieldset class="reset bg-deg-t rounded">
       <legend class="reset text-white fs-4">
-        <span class="badge bg-form">Reseña</span>
+        <span class="badge bg-deg-t">Reseña</span>
       </legend>
       <div class="input-group">
         <span class="input-group-text">Deje una reseña</span>
@@ -353,6 +443,7 @@
         ></textarea>
       </div>
     </fieldset>
+    <div appCaptcha (respuesta)="cargarCaptchaFinalizar($event)"></div>
     <button
       type="submit"
       class="btn btn-success w-100 mt-3"
@@ -363,7 +454,7 @@
     <button
       type="button"
       class="btn btn-secondary w-100 mt-1"
-      (click)="estado = 'tabla'"
+      (click)="(estado = 'tabla') && formFinalizar.controls['captcha'].setValue(null)"
     >
       Volver
     </button>
@@ -372,7 +463,7 @@
 
 <div *ngIf="estado == 'resenia'">
   <h2 class="text-center pb-2">
-    <span class="badge bg-form">Comentarios</span>
+    <span class="badge bg-deg-t">Comentarios</span>
   </h2>
   <div *ngIf="turnoSeleccionado.comentarioCancelacion" class="mb-3">
     <span class="badge rounded-pill bg-danger fs-5"

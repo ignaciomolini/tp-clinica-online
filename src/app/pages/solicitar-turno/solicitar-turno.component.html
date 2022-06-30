@@ -1,7 +1,7 @@
 <div class="container">
   <div class="card rounded" @entrada>
     <div class="card-header">
-      <h1 class="text-center p-3 text-white">Solicitar turno</h1>
+      <h1 class="text-center p-2 text-white fw-bold">Solicitar turno</h1>
     </div>
     <div class="card-body p-4">
       <div [ngSwitch]="estado">
@@ -12,7 +12,7 @@
           <div *ngIf="especialidades.length; else loading">
             <div class="row scroll">
               <div
-                class="col p-1 mb-3 text-center"
+                class="col p-1 text-center"
                 *ngFor="let paciente of pacientes"
               >
                 <button
@@ -51,7 +51,7 @@
           <div *ngIf="especialidades.length; else loading">
             <div class="row scroll">
               <div
-                class="col p-1 mb-3 text-center"
+                class="col p-1 text-center"
                 *ngFor="let especialidad of especialidades"
               >
                 <button
@@ -85,7 +85,7 @@
           </h2>
           <div class="row scroll">
             <div
-              class="col p-1 mb-3 text-center"
+              class="col p-1 text-center"
               *ngFor="let especialista of especialistasPorEspecialidad"
             >
               <button
@@ -117,7 +117,7 @@
             <span class="badge">Elija un dia</span>
           </h2>
           <div class="row scroll">
-            <div class="col p-1 mb-3 text-center" *ngFor="let dia of dias">
+            <div class="col p-1 text-center" *ngFor="let dia of dias">
               <button
                 type="button"
                 class="btn btn-primary"
@@ -146,8 +146,14 @@
             />
             <span class="badge">Elija una hora</span>
           </h2>
+          <div
+            *ngIf="usuarioActual.rol == 'paciente'"
+            class="mb-3"
+            appCaptcha
+            (respuesta)="cargarCaptcha($event)"
+          ></div>
           <div class="row scroll">
-            <div class="col p-1 mb-3 text-center" *ngFor="let hora of horas">
+            <div class="col p-1 text-center" *ngFor="let hora of horas">
               <button
                 type="button"
                 class="btn btn-primary"
@@ -164,5 +170,3 @@
     </div>
   </div>
 </div>
-
-

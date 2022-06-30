@@ -21,6 +21,15 @@ import html2canvas from 'html2canvas';
       transition(':enter', [
         animate("1s cubic-bezier(.17,.67,.88,.1)")
       ])
+    ]),
+    trigger('entrada2', [
+      state('void', style({
+        transform: 'translateY(+50%)',
+        opacity: 0
+      })),
+      transition(':enter', [
+        animate("1s cubic-bezier(.17,.67,.88,.1)")
+      ])
     ])
   ]
 })

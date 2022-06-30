@@ -32,10 +32,7 @@
   </div>
 
   <div class="table-responsive">
-    <table
-      id="tabla"
-      class="table table-bordered align-middle text-center text-white"
-    >
+    <table id="tabla" class="table align-middle text-center text-white">
       <thead>
         <tr>
           <th>#</th>
@@ -59,19 +56,16 @@
           <td>{{ usuario.rol }}</td>
           <td *ngIf="!excel">
             <button
-              class="btn text-white"
+              class="btn text-white p-0"
               *ngIf="usuario.rol == 'paciente'"
               (click)="mostrarHistoriaClinica(usuario)"
             >
-              Ver
+            <span class="badge p-3 bg-uno fs-6"> Ver </span>
             </button>
           </td>
           <td *ngIf="!excel">
-            <button
-              class="btn text-white"
-              (click)="mostrarDetalle(usuario)"
-            >
-              Ver
+            <button class="btn text-white p-0" (click)="mostrarDetalle(usuario)">
+              <span class="badge p-3 bg-uno fs-6"> Ver </span>
             </button>
           </td>
           <td>
@@ -116,14 +110,12 @@
       width="25px"
       (click)="estado = 'tabla'"
     />
-    <span class="badge bg-uno text-wrap"
+    <span class="badge bg-deg-t text-wrap"
       >Historia clinica de {{ usuarioSeleccionado.nombre }}
       {{ usuarioSeleccionado.apellido }}</span
     >
   </h2>
-  <app-historia-clinica
-    [paciente]="usuarioSeleccionado"
-  ></app-historia-clinica>
+  <app-historia-clinica [paciente]="usuarioSeleccionado"></app-historia-clinica>
 </div>
 
 <div *ngIf="estado == 'detalle'">
@@ -134,7 +126,7 @@
       width="25px"
       (click)="estado = 'tabla'"
     />
-    <span class="badge bg-uno text-wrap"
+    <span class="badge bg-deg-t text-wrap"
       >Detalle de {{ usuarioSeleccionado.nombre }}
       {{ usuarioSeleccionado.apellido }}</span
     >

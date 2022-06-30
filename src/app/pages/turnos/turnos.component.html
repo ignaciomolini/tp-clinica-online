@@ -1,9 +1,9 @@
 <div class="container">
   <div class="card" @entrada>
-    <div class="card-header">
-      <h1 class="fw-bold text-white text-center p-3">Turnos</h1>
+    <div class="card-header bg-deg-t">
+      <h1 class="fw-bold text-white text-center p-2">Turnos</h1>
     </div>
-    <div class="card-body">
+    <div class="card-body bg-deg-t">
       <div *ngIf="estado == 'tabla'">
         <input
           type="text"
@@ -26,7 +26,7 @@
               </tr>
             </thead>
             <tbody *ngIf="turnosFiltrados.length > 0">
-              <tr *ngFor="let turno of turnosFiltrados; let i = index" appBgTurnos [estado]="turno.estado">
+              <tr *ngFor="let turno of turnosFiltrados; let i = index" appLupa appBgTurnos [estado]="turno.estado">
                 <th scope="row">{{ i + 1 }}</th>
                 <td>
                   {{ turno.paciente.nombre }} {{ turno.paciente.apellido }}
@@ -138,3 +138,4 @@
     </div>
   </div>
 </div>
+

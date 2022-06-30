@@ -1,9 +1,9 @@
 <div class="container">
-  <div class="card card-principal my-5" @entrada>
-    <div class="card-header">
+  <div class="card my-5" @entrada>
+    <div class="card-header bg-deg-t">
       <h1 class="text-white p-2 text-center fw-bold">Perfil</h1>
     </div>
-    <div class="card-body">
+    <div class="card-body bg-deg-t">
       <div class="row gutters-sm" *ngIf="usuario; else loading">
         <div class="col-md-4 mb-3">
           <div class="d-flex flex-column align-items-center text-center">
@@ -21,7 +21,7 @@
 
         <div class="col-md-8 text-white">
           <div class="card mb-3">
-            <div class="card-body">
+            <div class="card-body bg-deg-t">
               <div class="row">
                 <div class="col-sm-4">
                   <h6 class="mb-0">Nombre completo:</h6>
@@ -68,10 +68,10 @@
                   class="accordion accordion-flush"
                   id="accordionFlushExample"
                 >
-                  <div class="accordion-item">
+                  <div class="accordion-item bg-uno">
                     <h2 class="accordion-header" id="flush-headingOne">
                       <button
-                        class="accordion-button collapsed text-white"
+                        class="accordion-button collapsed text-white bg-uno"
                         type="button"
                         data-bs-toggle="collapse"
                         data-bs-target="#flush-collapseOne"
@@ -92,8 +92,14 @@
                           class="m-0"
                           *ngFor="let especialidad of usuario.especialidad"
                         >
-                          <li class="text-dark"><button class="btn btn-sm btn-primary"
-                            (click)="mostrarTurnos(especialidad)">{{ especialidad.nombre }}</button></li>
+                          <li class="text-dark">
+                            <button
+                              class="btn btn-sm btn-primary"
+                              (click)="mostrarTurnos(especialidad)"
+                            >
+                              {{ especialidad.nombre }}
+                            </button>
+                          </li>
                         </ul>
                       </div>
                     </div>
@@ -109,12 +115,12 @@
       </ng-template>
     </div>
   </div>
-  <div *ngIf="usuario && usuario.rol == 'especialista'">
+  <div *ngIf="usuario && usuario.rol == 'especialista'" @entrada2>
     <app-mis-horarios [especialista]="usuario"></app-mis-horarios>
   </div>
-  <div class="historia-clinica" *ngIf="usuario && usuario.rol == 'paciente'">
+  <div *ngIf="usuario && usuario.rol == 'paciente'" @entrada2>
     <div class="card">
-      <div class="card-header">
+      <div class="card-header bg-deg-t">
         <button *ngIf="cargandoPdf" class="btn pdf" (click)="crearPdfHC()">
           <img
             src="https://cdn-icons-png.flaticon.com/128/337/337946.png"
@@ -124,15 +130,20 @@
         <app-loading class="pdf" *ngIf="!cargandoPdf"></app-loading>
         <h2 class="text-white text-center p-2 fw-bold">Historia clinica</h2>
       </div>
-      <div class="card-body">
+      <div class="card-body bg-deg-t">
         <app-historia-clinica [paciente]="usuario" #hc></app-historia-clinica>
       </div>
     </div>
   </div>
 
-  <div *ngIf="usuario && usuario.rol == 'especialista' && mostrarTurnosEspecialidad">
+  <div
+    *ngIf="
+      usuario && usuario.rol == 'especialista' && mostrarTurnosEspecialidad
+    "
+    @entrada2
+  >
     <div class="card">
-      <div class="card-header">
+      <div class="card-header bg-deg-t">
         <button *ngIf="cargandoPdf" class="btn pdf" (click)="crearPdfTurnos()">
           <img
             src="https://cdn-icons-png.flaticon.com/128/337/337946.png"
@@ -140,11 +151,16 @@
           />
         </button>
         <app-loading class="pdf" *ngIf="!cargandoPdf"></app-loading>
-        <h2 class="text-white text-center p-2 fw-bold px-5">Turnos de {{especialidadSeleccionada}}</h2>
+        <h2 class="text-white text-center p-2 fw-bold px-5">
+          Turnos de {{ especialidadSeleccionada }}
+        </h2>
       </div>
-      <div class="card-body">
+      <div class="card-body bg-deg-t">
         <div class="table-responsive">
-          <table class="table align-middle table-hover table-light text-center" id="tabla-turnos">
+          <table
+            class="table align-middle text-center text-white"
+            id="tabla-turnos"
+          >
             <thead>
               <tr>
                 <th>#</th>
@@ -155,22 +171,31 @@
               </tr>
             </thead>
             <tbody *ngIf="turnosEspecialidad.length > 0">
-              <tr *ngFor="let turno of turnosEspecialidad; let i = index">
+              <tr
+                *ngFor="let turno of turnosEspecialidad; let i = index"
+                appLupa
+                appBgTurnos
+                [estado]="turno.estado"
+              >
                 <th scope="row">{{ i + 1 }}</th>
-                <td>{{ turno.paciente.nombre }} {{ turno.paciente.apellido }}</td>
+                <td>
+                  {{ turno.paciente.nombre }} {{ turno.paciente.apellido }}
+                </td>
                 <td>{{ turno.especialidad.nombre }}</td>
                 <td>{{ turno.fecha | fecha }}</td>
-                <td
-                  class="fs-5 fw-bold"
-                  [ngClass]="{
-                    'text-warning': turno.estado === 'pendiente',
-                    'text-danger':
-                      turno.estado === 'rechazado' || turno.estado === 'cancelado',
-                    'text-info': turno.estado === 'finalizado',
-                    'text-success': turno.estado === 'aceptado'
-                  }"
-                >
-                  {{ turno.estado }}
+                <td class="fs-3 fw-bold">
+                  <span
+                    class="badge bg-uno p-3"
+                    [ngClass]="{
+                      'text-warning': turno.estado === 'pendiente',
+                      'text-danger':
+                        turno.estado === 'rechazado' ||
+                        turno.estado === 'cancelado',
+                      'text-info': turno.estado === 'finalizado',
+                      'text-success': turno.estado === 'aceptado'
+                    }"
+                    >{{ turno.estado | uppercase }}</span
+                  >
                 </td>
               </tr>
             </tbody>

@@ -1,0 +1,117 @@
+<div class="container" @entrada>
+  <div class="row mt-4">
+    <div class="col">
+      <h1 class="text-white text-center">
+        <span class="badge fs-1 bg-deg-t">Informes</span>
+      </h1>
+    </div>
+  </div>
+  <div class="row justify-content-center">
+    <div class="col-sm">
+      <div class="card mt-4">
+        <div class="card-header p-3 bg-deg-t">
+          <h2 class="text-white text-center fw-bold">Logs usuarios</h2>
+          <button *ngIf="logs && logs.length > 0" class="btn btn-excel p-0" (click)="exportarAExcel()">
+            <img
+              src="https://img.icons8.com/color/344/ms-excel.png"
+              width="40px"
+            />
+          </button>
+        </div>
+        <div class="card-body d-flex align-items-center justify-content-center bg-deg-t">
+          <div
+            class="table-responsive w-100"
+            *ngIf="logs && logs.length > 0; else load"
+          >
+            <table
+              id="tabla"
+              class="table align-middle text-center text-white"
+            >
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Nombre</th>
+                  <th>Email</th>
+                  <th>Fecha y hora</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let log of logs; let i = index" appLupa>
+                  <th>{{ i + 1 }}</th>
+                  <td>{{ log.usuario.nombre }} {{ log.usuario.apellido }}</td>
+                  <td>{{ log.usuario.email }}</td>
+                  <td>{{ log.fecha | fecha }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <ng-template #load>
+            <app-loading></app-loading>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm">
+      <div class="card mt-4">
+        <div class="card-header p-3 bg-deg-t">
+          <h2 class="text-white text-center fw-bold">Cantidad de turnos por dia</h2>
+        </div>
+        <div class="card-body d-flex align-items-center justify-content-center bg-deg-t">
+          <app-grafico-turnos-dia
+            class="w-100"
+            [datos]="getDatosGrafico()"
+          ></app-grafico-turnos-dia>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm">
+      <div class="card mt-4">
+        <div class="card-header p-3 bg-deg-t">
+          <h2 class="text-white text-center fw-bold">
+            Cantidad de turnos por especialidad
+          </h2>
+        </div>
+        <div class="card-body d-flex align-items-center justify-content-center bg-deg-t">
+          <app-grafico-turnos-especialidad
+            class="w-100"
+            [datos]="getDatosGrafico()"
+          ></app-grafico-turnos-especialidad>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row mb-3">
+    <div class="col-sm">
+      <div class="card mt-4">
+        <div class="card-header p-3 bg-deg-t">
+          <h2 class="text-white text-center fw-bold">
+            Cantidad de turnos solicitados por médico en un lapso de tiempo
+          </h2>
+        </div>
+        <div class="card-body d-flex align-items-center justify-content-center bg-deg-t">
+          <app-grafico-turnos-solicitado
+            class="w-100"
+            [datos]="getDatosGrafico()"
+          ></app-grafico-turnos-solicitado>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm">
+      <div class="card mt-4">
+        <div class="card-header p-3 bg-deg-t">
+          <h2 class="text-white text-center fw-bold">
+            Cantidad de turnos finalizados por médico en un lapso de tiempo
+          </h2>
+        </div>
+        <div class="card-body d-flex align-items-center justify-content-center bg-deg-t">
+          <app-grafico-turnos-finalizado
+            class="w-100"
+            [datos]="getDatosGrafico()"
+          ></app-grafico-turnos-finalizado>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

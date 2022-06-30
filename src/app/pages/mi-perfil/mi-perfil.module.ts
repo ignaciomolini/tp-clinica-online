@@ -6,6 +6,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { PipesModule } from 'src/app/pipes/pipes.module';
 import { MiPerfilComponent } from './mi-perfil.component';
 import { MisHorariosComponent } from './mis-horarios/mis-horarios.component';
+import { DirectivesModule } from 'src/app/directives/directives.module';
 
 
 @NgModule({
@@ -17,7 +18,8 @@ import { MisHorariosComponent } from './mis-horarios/mis-horarios.component';
     CommonModule,
     MiPerfilRoutingModule,
     SharedModule, 
-    PipesModule
+    PipesModule,
+    DirectivesModule
   ]
 })
 export class MiPerfilModule { }

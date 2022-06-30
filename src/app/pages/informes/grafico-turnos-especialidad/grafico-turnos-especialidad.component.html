@@ -1,0 +1,18 @@
+<div *ngIf="data.labels && data.labels.length > 0; else load">
+  <button class="btn pdf" (click)="crearPdf()">
+    <img
+      src="https://cdn-icons-png.flaticon.com/128/337/337946.png"
+      width="35px"
+    />
+  </button>
+  <x-chartist
+    id="graficoEspecialidad"
+    class="d-flex align-items-center justify-content-center"
+    [type]="type"
+    [data]="data"
+    [options]="options"
+  ></x-chartist>
+</div>
+<ng-template #load>
+  <app-loading class="text-center"></app-loading>
+</ng-template>

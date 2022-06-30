@@ -1,0 +1,11 @@
+.pdf:focus {
+  outline: none !important;
+  outline-width: 0 !important;
+  box-shadow: none;
+  -moz-box-shadow: none;
+  -webkit-box-shadow: none;
+}
+
+.pdf:active {
+  transform: scale(0.85);
+}

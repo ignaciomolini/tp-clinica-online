@@ -3,12 +3,14 @@ import { CommonModule } from '@angular/common';
 import { FocoDirective } from './foco.directive';
 import { BgTurnosDirective } from './bg-turnos.directive';
 import { LupaDirective } from './lupa.directive';
+import { CaptchaDirective } from './captcha.directive';
 
 @NgModule({
   declarations: [
     FocoDirective,
     BgTurnosDirective,
-    LupaDirective
+    LupaDirective,
+    CaptchaDirective
   ],
   imports: [
     CommonModule
@@ -16,7 +18,8 @@ import { LupaDirective } from './lupa.directive';
   exports: [
     FocoDirective,
     BgTurnosDirective,
-    LupaDirective
+    LupaDirective,
+    CaptchaDirective
   ]
 })
 export class DirectivesModule { }

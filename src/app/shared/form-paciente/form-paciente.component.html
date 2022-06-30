@@ -54,7 +54,6 @@
         </div>
       </div>
     </fieldset>
-
     <div class="row">
       <div class="col-md-7">
         <fieldset class="reset bg rounded mt-3 p-4">
@@ -102,7 +101,13 @@
               />
             </div>
             <div class="col-3 ps-0">
-              <img class="rounded-circle" src="{{ mostrarImagenUno }}" alt="foto1" width="38px" height="38px"/>
+              <img
+                class="rounded-circle"
+                src="{{ mostrarImagenUno }}"
+                alt="foto1"
+                width="38px"
+                height="38px"
+              />
             </div>
           </div>
           <div class="row align-items-center">
@@ -121,13 +126,19 @@
               />
             </div>
             <div class="col-3 ps-0">
-              <img class="rounded-circle" src="{{ mostrarImagenDos }}" alt="foto2"  width="38px" height="38px"/>
+              <img
+                class="rounded-circle"
+                src="{{ mostrarImagenDos }}"
+                alt="foto2"
+                width="38px"
+                height="38px"
+              />
             </div>
           </div>
         </fieldset>
       </div>
     </div>
-
+    <div appCaptcha (respuesta)="cargarCaptcha($event)"></div>
     <button
       type="submit"
       class="btn btn-success btn-lg w-100 mt-4 mb-2"

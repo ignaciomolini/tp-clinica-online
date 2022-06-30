@@ -2,7 +2,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 90vw;
+  flex-wrap: wrap;
   height: 85vh;
 }
 
@@ -14,6 +14,7 @@
 }
 
 .card {
+  margin-top: 2rem;
   background-color: rgba(240, 248, 255, 0);
   box-shadow: 7px 7px 20px rgb(39, 74, 120);
 }
@@ -51,9 +52,6 @@
   }
   .btn {
     padding: 1rem;
-  }
-  .mar-top {
-    margin-top: 15rem;
   }
   .backIcon{
     top: 1.6rem;

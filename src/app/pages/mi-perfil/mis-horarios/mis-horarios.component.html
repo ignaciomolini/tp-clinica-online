@@ -1,6 +1,6 @@
 <div class="card">
-  <div class="card-header">
-    <h2 class="p-1 text-center m-0">Mis horarios</h2>
+  <div class="card-header bg-deg-t">
+    <h2 class="p-1 text-center text-white fw-bold m-0">Mis horarios</h2>
     <div
       class="backIcon me-2"
       *ngIf="agregarHorario"
@@ -9,13 +9,13 @@
       <img src="https://img.icons8.com/officel/2x/back.png" width="25px" />
     </div>
   </div>
-  <div class="card-body">
+  <div class="card-body bg-deg-t">
     <div *ngIf="agregarHorario">
       <div [ngSwitch]="estado">
         <div *ngSwitchCase="'especialidades'">
           <a
             type="button"
-            class="btn btn-outline-secondary nav-link dropdown-toggle text-dark"
+            class="btn btn-primary nav-link dropdown-toggle text-white"
             data-bs-toggle="dropdown"
             aria-expanded="false"
           >
@@ -44,7 +44,7 @@
         <div *ngSwitchCase="'dias'">
           <a
             type="button"
-            class="btn btn-outline-secondary nav-link dropdown-toggle text-dark"
+            class="btn btn-primary nav-link dropdown-toggle text-white"
             data-bs-toggle="dropdown"
             aria-expanded="false"
           >
@@ -66,7 +66,7 @@
         <div *ngSwitchCase="'desde'">
           <a
             type="button"
-            class="btn btn-outline-secondary nav-link dropdown-toggle"
+            class="btn btn-primary nav-link dropdown-toggle text-white"
             data-bs-toggle="dropdown"
             aria-expanded="false"
           >
@@ -88,7 +88,7 @@
         <div *ngSwitchCase="'hasta'">
           <a
             type="button"
-            class="btn btn-outline-secondary nav-link dropdown-toggle"
+            class="btn btn-primary nav-link dropdown-toggle text-white"
             data-bs-toggle="dropdown"
             aria-expanded="false"
           >
@@ -106,13 +106,14 @@
               </li>
             </div>
           </ul>
+          <div appCaptcha (respuesta)="cargarCaptcha($event)"></div>
         </div>
       </div>
     </div>
     <div *ngIf="!agregarHorario">
       <div class="d-grid gap-2 mb-2">
         <button
-          class="btn btn-outline-primary"
+          class="btn btn-primary"
           (click)="(agregarHorario = true) && (estado = 'especialidades')"
         >
           Agregar horario
@@ -120,13 +121,15 @@
       </div>
       <div *ngFor="let especialidad of especialista.especialidad">
         <div
+          class="table-responsive"
           *ngIf="
             especialidad.horarios && especialidad.horarios.length > 0;
             else sinHorarios
           "
         >
-          <span>{{ especialidad.nombre }}</span>
-          <table class="table">
+          <span class="text-white">{{ especialidad.nombre }}</span>
+
+          <table class="table align-middle text-center text-white">
             <thead>
               <tr>
                 <th>Dia</th>

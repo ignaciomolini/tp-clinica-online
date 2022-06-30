@@ -6,6 +6,7 @@ import { ToastrService } from 'ngx-toastr';
 import { AuthService } from 'src/app/services/auth.service';
 import { UsuarioService } from 'src/app/services/usuario.service';
 import Swal from 'sweetalert2';
+import { LogService } from 'src/app/services/log.service';
 
 @Component({
   selector: 'app-login',
@@ -27,7 +28,7 @@ export class LoginComponent implements OnInit {
   formLogin: FormGroup;
   usuarios: any[] = [];
 
-  constructor(private fb: FormBuilder, private usuarioService: UsuarioService, private authService: AuthService, private toastr: ToastrService, private rutas: Router) {
+  constructor(private fb: FormBuilder, private usuarioService: UsuarioService, private authService: AuthService, private toastr: ToastrService, private rutas: Router, private logService: LogService) {
     this.formLogin = this.fb.group({
       email: new FormControl('', [Validators.required, Validators.email]),
       password: new FormControl('', [Validators.required, Validators.minLength(6)])
@@ -69,14 +70,13 @@ export class LoginComponent implements OnInit {
               })
               this.authService.logout();
             } else {
+              //this.logService.agregarLog({usuario: usuario, fecha: new Date().getTime()})
               localStorage.setItem('usuario', JSON.stringify(usuario))
               this.rutas.navigateByUrl('');
             }
           }
         })
       }
-
-
     } catch (error: any) {
       this.toastr.error(error.message, "Error", {
         timeOut: 3000

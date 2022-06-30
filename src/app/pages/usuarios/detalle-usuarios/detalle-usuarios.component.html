@@ -10,7 +10,7 @@
     </div>
     <div class="col-md-8 text-white">
       <div class="card mb-3">
-        <div class="card-body">
+        <div class="card-body bg-deg-t">
           <div class="row">
             <div class="col-sm-4">
               <h6 class="mb-0">Nombre completo:</h6>
@@ -91,45 +91,47 @@
   </div>
   <div *ngIf="usuario.rol == 'paciente'">
     <h3 class="text-white text-center mt-2">
-      <span class="badge bg-uno text-wrap">Turnos</span>
+      <span class="badge bg-deg-t text-wrap">Turnos</span>
       <button class="btn btn-excel p-0" (click)="exportarAExcel()">
         <img src="https://img.icons8.com/color/344/ms-excel.png" width="40px" />
       </button>
     </h3>
     <div class="table-responsive">
-        <table class="table align-middle table-hover table-light text-center" id="tabla">
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Especialista</th>
-              <th>Especialidad</th>
-              <th>Fecha</th>
-              <th>Estado</th>
-            </tr>
-          </thead>
-          <tbody *ngIf="turnos.length > 0">
-            <tr *ngFor="let turno of turnos; let i = index">
-              <th scope="row">{{ i + 1 }}</th>
-              <td>
-                {{ turno.especialista.nombre }} {{ turno.especialista.apellido }}
-              </td>
-              <td>{{ turno.especialidad.nombre }}</td>
-              <td>{{ turno.fecha | fecha }}</td>
-              <td
-                class="fs-5 fw-bold"
+      <table class="table align-middle text-white text-center" id="tabla">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Especialista</th>
+            <th>Especialidad</th>
+            <th>Fecha</th>
+            <th>Estado</th>
+          </tr>
+        </thead>
+        <tbody *ngIf="turnos.length > 0">
+          <tr *ngFor="let turno of turnos; let i = index" appBgTurnos [estado]="turno.estado" appLupa>
+            <th scope="row">{{ i + 1 }}</th>
+            <td>
+              {{ turno.especialista.nombre }} {{ turno.especialista.apellido }}
+            </td>
+            <td>{{ turno.especialidad.nombre }}</td>
+            <td>{{ turno.fecha | fecha }}</td>
+            <td>
+              <span
+                class="badge bg-uno p-3 fs-6"
                 [ngClass]="{
                   'text-warning': turno.estado === 'pendiente',
                   'text-danger':
-                    turno.estado === 'rechazado' || turno.estado === 'cancelado',
+                    turno.estado === 'rechazado' ||
+                    turno.estado === 'cancelado',
                   'text-info': turno.estado === 'finalizado',
                   'text-success': turno.estado === 'aceptado'
                 }"
+                >{{ turno.estado | uppercase }}</span
               >
-                {{ turno.estado }}
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </div>

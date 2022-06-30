@@ -1,0 +1,30 @@
+.card {
+  background-color: rgba(240, 248, 255, 0);
+  box-shadow: 7px 7px 20px rgb(39, 74, 120);
+}
+
+.card-body {
+  min-height: 20rem;  
+}
+
+.table-responsive{
+  max-height: 20rem;
+}
+
+.btn-excel:active{
+  transform: scale(0.85);
+}
+
+.btn-excel:focus {
+  outline:none !important;
+  outline-width: 0 !important;
+  box-shadow: none;
+  -moz-box-shadow: none;
+  -webkit-box-shadow: none;
+}
+
+.btn{
+  position: absolute;
+  right: 1rem;
+  top: 1rem;
+}

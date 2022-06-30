@@ -27,15 +27,10 @@ import Swal from 'sweetalert2';
 export class RegisterComponent implements OnInit {
   formElegido: string = '';
   mostrarLoading: boolean = false;
-  captcha: string = '';
 
   constructor(private authService: AuthService, private rutas: Router, private toastr: ToastrService, private usuarioService: UsuarioService) { }
 
   ngOnInit(): void {
-  }
-
-  resolved(captchaResponse: string){
-    this.captcha = captchaResponse;
   }
 
   async registrarUsuario(usuario: Paciente | Especialista) {
